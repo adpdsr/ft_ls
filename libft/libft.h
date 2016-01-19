@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:08:49 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/14 13:01:21 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/19 15:35:55 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+//void				ft_lstpushback(t_list **blst, void const *content, size_t content_size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/18 16:17:09 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/19 16:58:39 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,18 @@
 typedef struct 		s_opt
 {
 	int				l;
-	int 			r_big;
+	int 			R;
 	int 			a;
 	int 			r;
 	int 			t;
+	char			error;
 }					t_opt;
-/*
-typedef struct		s_list
+
+typedef struct		s_lst
 {
 	char			*name;
-	char 			*path;
-	struct t_list 	*next;
-}					t_list;*/
+	//char 			*path;
+	struct s_lst 	*next;
+}					t_lst;
 
 #endif
