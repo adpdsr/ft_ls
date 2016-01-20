@@ -6,12 +6,48 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:25:55 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/19 13:25:59 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/20 18:50:23 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <stdio.h> // remove
+
+static void	init_struct_info(t_info *info)
+{
+	ft_putendl("--- INIT INFO STRUCT ---\n");
+	info->mode = 0;
+	info->uid = 0;
+	info->gid = 0;
+}
+
+static void	get_stat_info(char *path, struct stat *st, t_info *info)
+{
+	struct passwd *pwd;
+
+	if (stat(path, st) == -1) // get stat of path
+	{
+		ft_putendl("cant get stat info");
+		exit(EXIT_FAILURE);
+	}
+	if ((pwd = getpwuid(st->st_uid)) != NULL)
+	{
+		info->uid = st->st_uid;
+		info->gid = st->st_gid;
+		info->mode = st->st_mode;
+		//printf("st_uid dans struct stat : %u\n\n", st->st_uid);
+		//printf("pw_name dans struct passwd : %s\n\n", pwd->pw_name);
+		//printf("uid saved in struct info : %u\n\n", info->uid);
+	}
+}
+
+static void	display_info(t_info *info)
+{
+	ft_putendl("--- INFO SAVED ---\n");
+	printf("mode in my struct is : %hu\n", info->mode);
+	printf("uid in my struct is : %u\n", info->uid);
+	printf("gid in my struct is is : %u\n", info->gid);
+}
 
 static int get_size(char *path, struct stat *st)
 {
@@ -77,7 +113,7 @@ struct passwd *get_uid(char *path, struct stat *st)
 		exit(EXIT_FAILURE);
 	}
 	if ((pwd = getpwuid(st->st_uid)) != NULL)
-		    printf("user id : %s\n", pwd->pw_name);
+		printf("user id : %s\n", pwd->pw_name);
 	return (pwd);
 }
 
@@ -92,7 +128,7 @@ struct group *get_gid(char *path, struct stat *st)
 	}
 	if ((grp = getgrgid(st->st_gid)) != NULL)
 	{
-		    printf("group id : %s\n", grp->gr_name);
+		printf("group id : %s\n", grp->gr_name);
 	}
 	return (grp);
 }
@@ -109,6 +145,8 @@ static void get_time(char *path, struct stat *st)
 
 int		main(int ac, char **av)
 {
+	t_info	info;
+
 	int cnt_obj;
 	int cnt_gh;
 	int	size_tot;
@@ -141,16 +179,20 @@ int		main(int ac, char **av)
 		//ft_putnbr(str);
 		//ft_putstr("\n\n");
 	}
-	ft_putstr("\nNumber of objects (files + dir, without ghosts) in this dir : ");
+	ft_putstr("\nnumber of objects (files + dir, without ghosts) in this dir : ");
 	ft_putnbr(cnt_obj);
 	ft_putstr("\n\n");
 
-	ft_putstr("Total size of objects in this dir : ");
+	ft_putstr("total size of objects in this dir : ");
 	ft_putnbr(size_tot);
 	ft_putstr("\n\n");
 
-	ft_putstr("Number of ghost in this dir : ");
+	ft_putstr("number of ghost in this dir : ");
 	ft_putnbr(cnt_gh);
 	ft_putstr("\n\n");
+
+	init_struct_info(&info);
+	get_stat_info(path, &st, &info);
+	display_info(&info);
 	return (0);
 }

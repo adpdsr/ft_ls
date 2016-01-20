@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/20 18:43:41 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/20 18:34:14 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <stdlib.h> // malloc, free, exit
 # include <stdio.h> // perror, strerror
 
-typedef struct 		s_opt // stock input opt
+typedef struct 		s_opt
 {
 	int				l;
 	int 			R;
@@ -36,19 +36,17 @@ typedef struct 		s_opt // stock input opt
 	char			error;
 }					t_opt;
 
-typedef struct		s_file // stock file info
+typedef struct		s_info
 {
-	char			*name; // name of file
-	char			*user_id; // user name of file
-	char			*group_id; // group name of file
-	char			*date; // date of modif of file
-	int				size; // size of file
+	mode_t			mode;
+	uid_t			uid;
+	gid_t			gid;
 }					t_info;
 
 typedef struct		s_lst
 {
 	char			*name;
-	char 			*path;
+	//char 			*path;
 	struct s_lst 	*next;
 }					t_lst;
 

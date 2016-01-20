@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 14:35:11 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/19 17:08:52 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/20 17:53:22 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	err_illegal_opt(t_opt *flags)
 	exit(2); // 0 if everything ok, > 0 when error
 }
 
-static void	init_structure(t_opt *flags)
+static void	init_struct_opt(t_opt *flags)
 {
 	ft_putendl("--- INIT OPT STRUCT ---\n"); // test
 	flags->l = 0;
@@ -62,7 +62,7 @@ static int	get_opt(char *input, t_opt *opt)
 	if (input[0] == '-' && is_valid_opt(input[1]) == 0)
 	{
 		i = 1;
-		init_structure(opt);
+		init_struct_opt(opt);
 		while (input[i] && is_valid_opt(input[i]) == 0)
 		{
 			if (input[i] == 'l')
@@ -96,11 +96,10 @@ static void	get_path(int i, int ac, char **av, t_lst **start)
 	ft_putendl("--- PATH SAVED ---\n"); // test
 	if (i == 1 && ac >= 3) // i = 1 = opt
 	{
-		j = 2; // 2
+		j = 2;
 		while (j < ac)
 		{
-			ft_putstr(av[j]); // test
-			ft_putendl(""); // test
+			ft_putendl(av[j]); // test
 			*start = lstnew(av[j]);
 			j++;
 		}
@@ -110,8 +109,7 @@ static void	get_path(int i, int ac, char **av, t_lst **start)
 		j = 1;
 		while (j < ac)
 		{
-			ft_putstr(av[j - 1]); // test
-			ft_putendl(""); // test
+			ft_putendl(av[j - 1]); // test
 			*start = lstnew(av[j]);
 			j++;
 		}
@@ -131,14 +129,13 @@ static void	print_opt(t_opt *opt) // test
 	printf("t is : %d\n", opt->t);
 }
 
-void	print_lst(t_lst *begin_lst)
+void	print_lst(t_lst **begin_lst) // test
 {
 	t_lst *tmp;
 
-	tmp = begin_lst;
-	while (tmp != NULL)
+	tmp = *begin_lst;
+	while (tmp)
 	{
-	//	ft_putstr(tmp->path);
 		printf("\n%s\n", tmp->name);
 		tmp = tmp->next;
 	}
@@ -168,8 +165,8 @@ int		main(int ac, char **av)
 		get_path(i, ac, av, &start);
 	}
 	else
-	ft_putendl("--- NO ARGS ---\n"); // test
+		ft_putendl("--- NO ARGS ---\n"); // test
 	print_opt(&opt); // test
-	print_lst(start);
+	print_lst(&start);
 	return (0);
 }
