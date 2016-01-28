@@ -19,7 +19,7 @@
 # include <dirent.h> // opendir, readdir, closedir
 # include <sys/stat.h> // stat, lstat
 # include <pwd.h> // getpwuid
-# include <uuid/uuid.h> // getpwuid, getgrgid
+// # include <uuid/uuid.h> // getpwuid, getgrgid
 # include <grp.h> // getgrgid
 # include <sys/xattr.h> // listxattr, getxattr
 # include <time.h> // time, ctime
@@ -28,28 +28,22 @@
 
 typedef struct 		s_opt // stock input opt
 {
-	int				l;
-	int 			R;
-	int 			a;
-	int 			r;
-	int 			t;
-	char			error;
+	int			l;
+	int			R;
+	int			a;
+	int			r;
+	int			t;
+	char			err;
 }					t_opt;
 
-typedef struct		s_file // stock file info
+typedef struct		s_lst // stock file info
 {
 	char			*name; // name of file
 	char			*user_id; // user name of file
 	char			*group_id; // group name of file
 	char			*date; // date of modif of file
-	int				size; // size of file
-}					t_info;
-
-typedef struct		s_lst
-{
-	char			*name;
-	char 			*path;
+	int		size; // size of file
 	struct s_lst 	*next;
-}					t_lst;
+}				t_lst;
 
 #endif
