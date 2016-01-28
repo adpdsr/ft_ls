@@ -19,7 +19,7 @@
 # include <dirent.h> // opendir, readdir, closedir
 # include <sys/stat.h> // stat, lstat
 # include <pwd.h> // getpwuid
-# include <uuid/uuid.h> // getpwuid, getgrgid
+// # include <uuid/uuid.h> // getpwuid, getgrgid
 # include <grp.h> // getgrgid
 # include <sys/xattr.h> // listxattr, getxattr
 # include <time.h> // time, ctime
@@ -33,7 +33,6 @@ typedef struct 		s_opt // stock input opt
 	int				a;
 	int				r;
 	int				t;
-	char			err;
 }					t_opt;
 
 typedef struct		s_lst // stock file info

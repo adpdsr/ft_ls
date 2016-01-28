@@ -19,7 +19,6 @@ void	init_opt(t_opt *opt)
 	opt->a = 0;
 	opt->r = 0;
 	opt->t = 0;
-	opt->err = 0;
 }
 
 void	print_opt(t_opt *opt) // test
@@ -30,15 +29,12 @@ void	print_opt(t_opt *opt) // test
 	printf("a is -> %d\n", opt->a);
 	printf("r is -> %d\n", opt->r);
 	printf("t is -> %d\n\n", opt->t);
-	if (opt->err)
-		printf("error is -> %d\n\n", opt->err);
 }
 
-static void err_opt(t_opt *opt)
+static void err_opt(char err)
 {
 	ft_putstr_fd("ft_ls: illegal option -- ", 2);
-	ft_putchar_fd(opt->err, 2);
-	ft_putchar_fd('\n', 2);
+	ft_putendl_fd(err, 2);
 	ft_putstr_fd("usage: ft_ls [-Ralrt] [file ...]\n", 2);
 	exit(EXIT_FAILURE);
 }
@@ -69,10 +65,7 @@ int	get_opt(char *str, t_opt *opt)
 		i++;
 	}
 	if (str[i])
-	{
-		opt->err = str[i];
-		err_opt(opt); // return (-1)
-	}
+		err_opt(str[i]);
 	print_opt(opt);
 	return (0);
 }

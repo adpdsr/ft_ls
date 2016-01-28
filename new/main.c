@@ -25,6 +25,18 @@ char	*add_slash(char *path)
 	return (path);
 }
 
+void	free_lst(t_lst *head)
+{
+	t_lst *tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+}
+
 static void get_perm(struct stat *st, t_lst *elem)
 {
 	ft_memset(elem->perm, 0, 11);
@@ -93,6 +105,7 @@ void	get_param(char *path)
 		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
 	}
 	closedir(dir);
+	//free_lst(lst);
 }
 
 int		main(int ac, char **av)
