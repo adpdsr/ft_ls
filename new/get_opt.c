@@ -6,13 +6,13 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:51:23 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/28 17:46:55 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/29 14:33:43 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	init_opt(t_opt *opt)
+static void	init_opt(t_opt *opt)
 {
 	opt->l = 0;
 	opt->R = 0;
@@ -21,7 +21,7 @@ void	init_opt(t_opt *opt)
 	opt->t = 0;
 }
 
-void	print_opt(t_opt *opt) // test
+static void	print_opt(t_opt *opt) // test
 {
 	ft_putendl("--- OPT SAVED ---\n");
 	printf("l is -> %d\n", opt->l);
@@ -31,7 +31,7 @@ void	print_opt(t_opt *opt) // test
 	printf("t is -> %d\n\n", opt->t);
 }
 
-static void err_opt(char err)
+static void	err_opt(char *err)
 {
 	ft_putstr_fd("ft_ls: illegal option -- ", 2);
 	ft_putendl_fd(err, 2);
@@ -39,12 +39,12 @@ static void err_opt(char err)
 	exit(EXIT_FAILURE);
 }
 
-static int valid_opt(char c)
+static int 	valid_opt(char c)
 {
 	return ((c == 'l' || c == 'R' || c == 'a' || c == 'r' || c == 't'));
 }
 
-int	get_opt(char *str, t_opt *opt)
+int			get_opt(char *str, t_opt *opt)
 {
 	int i;
 
@@ -65,7 +65,7 @@ int	get_opt(char *str, t_opt *opt)
 		i++;
 	}
 	if (str[i])
-		err_opt(str[i]);
+		err_opt(&str[i]);
 	print_opt(opt);
 	return (0);
 }

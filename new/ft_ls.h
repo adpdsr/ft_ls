@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/28 18:50:04 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/01/29 16:57:03 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <dirent.h> // opendir, readdir, closedir
 # include <sys/stat.h> // stat, lstat
 # include <pwd.h> // getpwuid
-// # include <uuid/uuid.h> // getpwuid, getgrgid
+# include <uuid/uuid.h> // getpwuid, getgrgid
 # include <grp.h> // getgrgid
 # include <sys/xattr.h> // listxattr, getxattr
 # include <time.h> // time, ctime
@@ -37,13 +37,13 @@ typedef struct 		s_opt // stock input opt
 
 typedef struct		s_lst // stock file info
 {
-	char			*path;
 	char			*name; // name of file
-	char			*perm;
+	char			*chem;
+	char			perm[11];
 	char			*user_id; // user name of file
 	char			*group_id; // group name of file
 	char			*date; // date of modif of file
-	int				size; // size of file
+	int				blok;
 	int				link;
 	struct s_lst 	*next;
 }					t_lst;
