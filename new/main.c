@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/29 16:57:01 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/01 17:56:56 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,29 @@
 
 static void	display_llst(t_lst *lst)
 {
-	ft_putstr(lst->perm);
-	ft_putchar(' ');
-	ft_putnbr(lst->blok);
-	ft_putchar(' ');
-	ft_putstr(lst->user_id);
-	ft_putchar(' ');
-	ft_putstr(lst->group_id);
-	ft_putchar(' ');
-	ft_putstr("size "); // a faire
-	ft_putstr(lst->date);
-	ft_putchar(' ');
-	ft_putendl(lst->name);
+	t_lst *tmp;
+
+	tmp = lst->next;
+	while (tmp)
+	{
+		ft_putstr(tmp->perm);
+		ft_putchar(' ');
+		ft_putstr(tmp->link);
+		ft_putchar(' ');
+		//ft_putnbr(lst->blok);
+		//ft_putchar(' ');
+		ft_putstr(tmp->user_id);
+		ft_putchar(' ');
+		ft_putstr(tmp->group_id);
+		ft_putchar(' ');
+		ft_putstr(tmp->size); // a faire
+		ft_putchar(' ');
+		ft_putstr(tmp->date);
+		ft_putchar(' ');
+		ft_putendl(tmp->name);
+		tmp = tmp->next;
+	}
+	lst->next = NULL;
 }
 
 char	*add_slash(char *path)
@@ -47,14 +58,12 @@ static int	count_total(t_lst *lst/*, t_opt *opt*/)
 	int res;
 
 	res = 0;
-		ft_putendl("1");
 	/*if (opt->l == 1)
 	  {*/
 	while /*(lst != NULL)*/ (lst)
 	{
-		ft_putendl("2");
 		//if (lst->name[0] != '.')
-			res += lst->blok;
+		res += lst->blok;
 		lst = lst->next;
 	}
 	/*}*/
@@ -103,10 +112,11 @@ static void	fill_info(struct stat st, t_lst *lst, char *path, char *file)
 		lst->user_id = ft_strdup(pwd->pw_name);
 	if ((grp = getgrgid(st.st_gid)))
 		lst->group_id = ft_strdup(grp->gr_name);
-	//lst->perm = malloc(sizeof(char) * 10);
 	lst->chem = /*ft_strdup(*/path/*)*/;
 	lst->name = /*ft_strdup(*/file/*)*/;
 	lst->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
+	lst->link = ft_itoa(st.st_nlink);
+	lst->size = ft_itoa(st.st_size);
 	lst->blok = st.st_blocks;
 	get_perm(&st, lst);
 }
@@ -156,37 +166,22 @@ void	get_param(char *path)
 		ft_putendl("error malloc lst");
 		exit(EXIT_FAILURE);
 	}
-	lst = NULL;
+	start = lst;
+	lst = NULL; // lst->next = NULL; sinon premier maillon de la liste = NULL;
 	while (/*ret*/(ret = readdir(dir))) // ou while ((ret = readdir(dir)))
 	{
 		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-/*
-		ft_putstr("blok  | ");
-		ft_putnbr(lst->blok);
-		ft_putchar('\n');
-		ft_putstr("chem  | ");
-		ft_putendl(lst->chem);
-		ft_putstr("name  | ");
-		ft_putendl(lst->name);
-		ft_putstr("date  | ");
-		ft_putendl(lst->date);
-		ft_putstr("perm  | ");
-		ft_putendl(lst->perm);
-		ft_putstr("user  | ");
-		ft_putendl(lst->user_id);
-		ft_putstr("grup  | ");
-		ft_putendl(lst->group_id);
-		ft_putchar('\n');
-*/		
-		display_llst(lst);
-		//ret = readdir(dir);
+	lst = start;
 	}
 	total = count_total(lst);
 	ft_putstr("total | ");
 	ft_putnbr(total);
 	ft_putstr("\n\n");
+	
+	padding(lst);
+	display_llst(lst);
+	
 	// count blocks en parcourant la liste
-	// display info
 	closedir(dir);
 	//free_lst(lst);
 }
@@ -213,7 +208,7 @@ int		main(int ac, char **av)
 	else
 	{
 		ft_putendl("\n--- AC = 0 ---\n");
-		get_param("./"); // add opt
+		get_param("./");
 	}
 	return (0);
 }
