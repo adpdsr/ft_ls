@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/01 17:57:02 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/02 12:26:18 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,10 @@ typedef struct		s_lst // stock file info
 void	get_param(char *path);
 int		get_opt(char *str, t_opt *opt);
 void	padding(t_lst *lst); // test
+
+// basic functions
+
+void	ft_putstr_s(char *s);
+void	ft_putnbr_endl(int n);
 
 #endif

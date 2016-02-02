@@ -6,12 +6,11 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/01 17:56:56 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/02 12:26:13 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <stdio.h> // printf
 
 static void	display_llst(t_lst *lst)
 {
@@ -20,20 +19,12 @@ static void	display_llst(t_lst *lst)
 	tmp = lst->next;
 	while (tmp)
 	{
-		ft_putstr(tmp->perm);
-		ft_putchar(' ');
-		ft_putstr(tmp->link);
-		ft_putchar(' ');
-		//ft_putnbr(lst->blok);
-		//ft_putchar(' ');
-		ft_putstr(tmp->user_id);
-		ft_putchar(' ');
-		ft_putstr(tmp->group_id);
-		ft_putchar(' ');
-		ft_putstr(tmp->size); // a faire
-		ft_putchar(' ');
-		ft_putstr(tmp->date);
-		ft_putchar(' ');
+		ft_putstr_s(tmp->perm);
+		ft_putstr_s(tmp->link);
+		ft_putstr_s(tmp->user_id);
+		ft_putstr_s(tmp->group_id);
+		ft_putstr_s(tmp->size);
+		ft_putstr_s(tmp->date);
 		ft_putendl(tmp->name);
 		tmp = tmp->next;
 	}
@@ -42,50 +33,23 @@ static void	display_llst(t_lst *lst)
 
 char	*add_slash(char *path)
 {
-	int i;
-
-	i = ft_strlen(path) - 1;
 	if (path[ft_strlen(path) - 1] != '/')
 		path = ft_strjoin(path, "/");
-	ft_putstr("path | "); // test
-	ft_putendl(path); // test
-	ft_putchar('\n'); // test
 	return (path);
 }
 
-static int	count_total(t_lst *lst/*, t_opt *opt*/)
+static void	count_total(t_lst *lst)
 {
 	int res;
 
 	res = 0;
-	/*if (opt->l == 1)
-	  {*/
-	while /*(lst != NULL)*/ (lst)
+	while (lst)
 	{
-		//if (lst->name[0] != '.')
 		res += lst->blok;
 		lst = lst->next;
 	}
-	/*}*/
-	return (res);
-}
-
-//static void	free_content(t_lst *tmp)
-//{
-//
-//}
-
-void	free_lst(t_lst *head)
-{
-	t_lst *tmp;
-
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		//free_content(tmp);
-		free(tmp);
-	}
+	ft_putstr("total ");
+	ft_putnbr_endl(res);
 }
 
 static void get_perm(struct stat *st, t_lst *lst)
@@ -112,8 +76,8 @@ static void	fill_info(struct stat st, t_lst *lst, char *path, char *file)
 		lst->user_id = ft_strdup(pwd->pw_name);
 	if ((grp = getgrgid(st.st_gid)))
 		lst->group_id = ft_strdup(grp->gr_name);
-	lst->chem = /*ft_strdup(*/path/*)*/;
-	lst->name = /*ft_strdup(*/file/*)*/;
+	lst->chem = path;
+	lst->name = file;
 	lst->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
 	lst->link = ft_itoa(st.st_nlink);
 	lst->size = ft_itoa(st.st_size);
@@ -131,14 +95,9 @@ t_lst	*get_info(t_lst *start, char *file, char *path)
 	tmp->next = NULL;
 	ptr = start;
 	if (stat(path, &st) == 1)
-	{	
-		ft_putendl("fail to get stats");
-		exit(EXIT_FAILURE);
-	}
+		exit(1);
 	if (lstat(path, &st) <= 0)
-	{
 		fill_info(st, tmp, path, file);
-	}
 	if (start == NULL)
 		return (tmp);
 	while (ptr->next != NULL)
@@ -158,32 +117,24 @@ void	get_param(char *path)
 	if (!(dir = opendir(path)))
 	{
 		ft_putendl("error opening file");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
-	//ret = readdir(dir);
 	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
 	{
 		ft_putendl("error malloc lst");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	start = lst;
-	lst = NULL; // lst->next = NULL; sinon premier maillon de la liste = NULL;
-	while (/*ret*/(ret = readdir(dir))) // ou while ((ret = readdir(dir)))
+	lst->next = NULL;
+	while ((ret = readdir(dir)))
 	{
 		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-	lst = start;
+		lst = start;
 	}
-	total = count_total(lst);
-	ft_putstr("total | ");
-	ft_putnbr(total);
-	ft_putstr("\n\n");
-	
+	count_total(lst);
 	padding(lst);
 	display_llst(lst);
-	
-	// count blocks en parcourant la liste
 	closedir(dir);
-	//free_lst(lst);
 }
 
 int		main(int ac, char **av)
@@ -206,9 +157,6 @@ int		main(int ac, char **av)
 		}
 	}
 	else
-	{
-		ft_putendl("\n--- AC = 0 ---\n");
 		get_param("./");
-	}
 	return (0);
 }

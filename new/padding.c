@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/01 14:09:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/01 17:56:58 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/02 12:26:12 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*modif_str(char *str, int max)
 		return (str);
 }
 
-void	apply_padding(int len_usr, int len_grp, int len_lnk, int len_siz, t_lst *lst) // faire struct pour passer a la norme
+void	apply_padding(int len_usr, int len_grp, int len_lnk, int len_siz, t_lst *lst)
 {
 	t_lst *tmp;
 
@@ -59,10 +59,10 @@ void	apply_padding(int len_usr, int len_grp, int len_lnk, int len_siz, t_lst *ls
 void	padding(t_lst *lst)
 {
 	t_lst	*tmp;
-	int		len_grp;
-	int		len_usr;
-	int		len_lnk;
-	int		len_siz;
+	size_t	len_grp;
+	size_t	len_usr;
+	size_t	len_lnk;
+	size_t	len_siz;
 
 	tmp = lst;
 	len_usr = 0;
@@ -71,14 +71,14 @@ void	padding(t_lst *lst)
 	len_siz = 0;
 	while (tmp->next)
 	{
-		if (len_usr < (int)ft_strlen(tmp->next->user_id))
-			len_usr = (int)ft_strlen(tmp->next->user_id);
-		if (len_grp < (int)ft_strlen(tmp->next->group_id))
-			len_grp = (int)ft_strlen(tmp->next->group_id);
-		if (len_lnk < (int)ft_strlen(tmp->next->link))
-			len_lnk = (int)ft_strlen(tmp->next->link);
-		if (len_siz < (int)ft_strlen(tmp->next->size))
-			len_siz = (int)ft_strlen(tmp->next->size);
+		if (len_usr < ft_strlen(tmp->next->user_id))
+			len_usr = ft_strlen(tmp->next->user_id);
+		if (len_grp < ft_strlen(tmp->next->group_id))
+			len_grp = ft_strlen(tmp->next->group_id);
+		if (len_lnk < ft_strlen(tmp->next->link))
+			len_lnk = ft_strlen(tmp->next->link);
+		if (len_siz < ft_strlen(tmp->next->size))
+			len_siz = ft_strlen(tmp->next->size);
 		tmp = tmp->next;
 	}
 	apply_padding(len_usr, len_grp, len_lnk, len_siz, lst);
