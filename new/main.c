@@ -108,7 +108,7 @@ t_lst	*get_info(t_lst *start, char *file, char *path)
 
 void	get_param(char *path)
 {
-	int				total;
+	int			total;
 	DIR 			*dir;
 	struct dirent	*ret;
 	t_lst 			*lst;
@@ -133,7 +133,7 @@ void	get_param(char *path)
 	}
 	count_total(lst);
 	padding(lst);
-	sort(lst, ft_strcmp());
+//	sort(lst, ft_strcmp());
 	display_llst(lst);
 	closedir(dir);
 }
