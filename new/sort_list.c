@@ -6,47 +6,53 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 13:03:15 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/02 14:22:57 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:09:10 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <stdio.h> // test
 
-static void	swap_content(t_lst *dst, t_lst *src)
+void	lst_add(t_lst **start, t_lst *new) // add end
 {
-	dst->name = src->name;
-	dst->chem = src->chem;
-	dst->perm = src->perm;
-	dst->user_id = src->user_id;
-	dst->group_id = src->group_id;
-	dst->date = src->date;
-	dst->blok = src->blok;
-	dst->link = src->link;
-	dst->size = src->size;
-}
+	t_lst *ptr;
 
-static void	swap_node(t_lst **p1, t_lst **p2)
-{
-	t_lst tmp;
-
-	tmp = **p1;
-	swap_content(p1, *p2);
-	swap_content(p2, &tmp);
-}
-
-void	sort(t_lst **lst, int (*f)(t_lst *lst1, t_lst *lst2))
-{
-	t_lst *start;
-
-	start = lst;
-	while (lst)
+	if (*start == NULL)
+		*start = new;
+	else
 	{
-		if (f(lst, lst->next) > 0)
-		{
-			swap_node(&lst, &(lst->next));
-			lst = start;
-		}
-		lst = lst->next;
+		ptr = *start;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
 	}
+}
+
+static t_lst	*lst_swap(t_lst *p1, t_lst *p2)
+{
+	p1->next = p2->next;
+	p2->next = p1;
+	return (p2);
+}
+
+t_lst	*lst_sort_ascii(t_lst *lst)
+{
+	lst = lst->next;
+	printf("TEST1\n");
+	if (lst == NULL)
+		return (NULL);
+	printf("TEST2\n");
+	if (lst->next->next != NULL && printf("TEST3\n") && ft_strcmp(lst->name, lst->next->name) > 0 && printf("TEST4\n"))
+	{
+		printf("TEST5\n");
+		lst = lst_swap(lst, lst->next);
+	}
+	printf("TEST6\n");
+	lst->next = lst_sort_ascii(lst->next);
+	if (lst->next != NULL && ft_strcmp(lst->name, lst->next->name) > 0)
+	{
+		lst = lst_swap(lst, lst->next);
+		lst->next = lst_sort_ascii(lst->next);
+	}
+	return (lst);
 }

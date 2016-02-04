@@ -1,33 +1,39 @@
-//
-// HEADER
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   format_size.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/04 10:20:35 by adu-pelo          #+#    #+#             */
+/*   Updated: 2016/02/04 10:45:05 by adu-pelo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "ft_ls.h"
 
-char	*add_unit(char *s, int size)
+static char	*add_unit(char *s, int size)
 {
 	if (size >= 1 && size <= 3)
-		return (" O");
-	if (size >= 4 && size <= 6)
-		return (" Ko");
-	if (size >= 7 && size <= 9)
-		return (" Mo");
-	if (size >= 10 && size <= 13)
-		return (" Go");
+		return (" B");
+	else if (size >= 4 && size <= 6)
+		return (" K");
+	else if (size >= 7 && size <= 9)
+		return (" M");
+	else if (size >= 10 && size <= 13)
+		return (" G");
+	else
+		return (" T");
 }
 
-char	*add_dot(char *s, size_t size)
+static char	*add_dot(char *s, size_t size)
 {
 	size_t toput;
 	char *tmp;
 
-	if (!(tmp = (char *)malloc(sizeof(char) * size + 1))) // use strnew
-		return (NULL);
-	ft_bzero(tmp, size + 1);
-	toput = size % 3; // ternaire pour les 3 lignes
-	if (toput == 0)
-		toput = 3;
+	tmp = ft_strnew(size + 1);
+	toput = size % 3;
+	((toput == 0)) ? toput = 3 : toput;
 	ft_strncpy(tmp, s, toput);
 	ft_strcat(tmp, ".");
 	tmp[toput + 1] = s[toput];
@@ -37,16 +43,13 @@ char	*add_dot(char *s, size_t size)
 
 char	*format_size(char *s)
 {
-	size_t size;
-	char *formated;
-	char *end;
+	size_t	size;
+	char	*formated;
+	char	*end;
 
 	size = ft_strlen(s);
-	if (!(formated = (char *)malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	ft_bzero(formated, size + 1);
-	if (!(end = (char *)malloc(sizeof(char) * 4)))
-		return (NULL);
+	formated = ft_strnew(size + 1);
+	end = ft_strnew(2);
 	end = add_unit(formated, size);
 	if (size >= 4)
 	{
@@ -57,25 +60,4 @@ char	*format_size(char *s)
 	ft_strcpy(formated, s);
 	ft_strcat(formated, end);
 	return (formated);
-}
-
-int	main(void) // sans arrondi
-{
-	char *s1;
-	char *s2;
-	char *s3;
-	char *s4;
-	char *s5;
-
-	s1 = "123";
-	s2 = "1234";
-	s3 = "12345";
-	s4 = "123456";
-	s5 = "1234567";
-	printf("\ninput :  %s\n\nresult : %s\n\n", s1, format_size(s1));
-	printf("\ninput :  %s\n\nresult : %s\n\n", s2, format_size(s2));
-	printf("\ninput :  %s\n\nresult : %s\n\n", s3, format_size(s3));
-	printf("\ninput :  %s\n\nresult : %s\n\n", s4, format_size(s4));
-	printf("\ninput :  %s\n\nresult : %s\n\n", s5, format_size(s5));
-	return (0);
 }

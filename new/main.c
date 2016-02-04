@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/02 14:22:59 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:09:14 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,61 +80,49 @@ static void	fill_info(struct stat st, t_lst *lst, char *path, char *file)
 	lst->name = file;
 	lst->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
 	lst->link = ft_itoa(st.st_nlink);
-	lst->size = ft_itoa(st.st_size);
+	lst->size = format_size(ft_itoa(st.st_size));
 	lst->blok = st.st_blocks;
 	get_perm(&st, lst);
 }
 
 t_lst	*get_info(t_lst *start, char *file, char *path)
 {
-	struct stat	st;
-	t_lst	*tmp;
-	t_lst	*ptr;
+	struct stat		st;
+	t_lst			*new;
+	t_lst			*ptr;
 
-	tmp = (t_lst *)malloc(sizeof(t_lst));
-	tmp->next = NULL;
+	new = (t_lst *)malloc(sizeof(t_lst));
+	new->next = NULL;
 	ptr = start;
 	if (stat(path, &st) == 1)
 		exit(1);
 	if (lstat(path, &st) <= 0)
-		fill_info(st, tmp, path, file);
-	if (start == NULL)
-		return (tmp);
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = tmp;
-	return (tmp);
+		fill_info(st, new, path, file);
+	lst_add(&start, new);
+	return (new);
 }
 
 void	get_param(char *path)
 {
-	int			total;
 	DIR 			*dir;
 	struct dirent	*ret;
-	t_lst 			*lst;
+	t_lst 			*new;
 	t_lst			*start;
 
 	if (!(dir = opendir(path)))
-	{
-		ft_putendl("error opening file");
 		exit(1);
-	}
-	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
-	{
-		ft_putendl("error malloc lst");
+	if (!(new = (t_lst *)malloc(sizeof(t_lst))))
 		exit(1);
-	}
-	start = lst;
-	lst->next = NULL;
+	start = new;
+	new->next = NULL;
 	while ((ret = readdir(dir)))
-	{
-		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-		lst = start;
-	}
-	count_total(lst);
-	padding(lst);
-//	sort(lst, ft_strcmp());
-	display_llst(lst);
+		new = get_info(new, ret->d_name, ft_strjoin(path, ret->d_name));
+	count_total(start);
+	padding(start);
+
+	//new = lst_sort_ascii(new);
+
+	display_llst(start);
 	closedir(dir);
 }
 
@@ -154,6 +142,8 @@ int		main(int ac, char **av)
 		while (av[i])
 		{
 			get_param(add_slash(av[i])); // add opt
+			if (av[i + 1])
+				ft_putchar('\n');
 			i++;
 		}
 	}
