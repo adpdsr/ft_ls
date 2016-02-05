@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/04 17:09:14 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/05 14:24:09 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	display_llst(t_lst *lst)
 {
 	t_lst *tmp;
 
-	tmp = lst->next;
+	tmp = lst;
 	while (tmp)
 	{
 		ft_putstr_s(tmp->perm);
@@ -67,62 +67,61 @@ static void get_perm(struct stat *st, t_lst *lst)
 	lst->perm[9] = (st->st_mode & S_IXOTH) ? 'x' : '-';
 }
 
-static void	fill_info(struct stat st, t_lst *lst, char *path, char *file)
+static void	fill_info(struct stat st, t_lst *new, char *file)
 {
-	struct passwd	*pwd;
-	struct group	*grp;
-
-	if ((pwd = getpwuid(st.st_uid)))
-		lst->user_id = ft_strdup(pwd->pw_name);
-	if ((grp = getgrgid(st.st_gid)))
-		lst->group_id = ft_strdup(grp->gr_name);
-	lst->chem = path;
-	lst->name = file;
-	lst->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
-	lst->link = ft_itoa(st.st_nlink);
-	lst->size = format_size(ft_itoa(st.st_size));
-	lst->blok = st.st_blocks;
-	get_perm(&st, lst);
+	//lst->chem = path;
+	new->name = file;
+	new->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
+	new->link = ft_itoa(st.st_nlink);
+	new->size = format_size(ft_itoa(st.st_size));
+	new->blok = st.st_blocks;
+	get_perm(&st, new);
+	new->next = NULL;
 }
 
-t_lst	*get_info(t_lst *start, char *file, char *path)
+t_lst	*get_info(t_lst *head, char *file, char *path)
 {
 	struct stat		st;
 	t_lst			*new;
 	t_lst			*ptr;
 
 	new = (t_lst *)malloc(sizeof(t_lst));
-	new->next = NULL;
-	ptr = start;
-	if (stat(path, &st) == 1)
-		exit(1);
+	ptr = head;
 	if (lstat(path, &st) <= 0)
-		fill_info(st, new, path, file);
-	lst_add(&start, new);
-	return (new);
+	{
+		fill_info(st, new, file);
+		if (getpwuid(st.st_uid))
+			new->user_id = ft_strdup(getpwuid(st.st_uid)->pw_name);
+		if (getgrgid(st.st_gid))
+			new->group_id = ft_strdup(getgrgid(st.st_gid)->gr_name);
+	}
+	if (head == NULL)
+		return (new);
+	while (ptr->next)
+		ptr = ptr->next;
+	ptr->next = new;
+	return (head);
 }
 
 void	get_param(char *path)
 {
 	DIR 			*dir;
 	struct dirent	*ret;
-	t_lst 			*new;
-	t_lst			*start;
+	t_lst 			*lst;
 
 	if (!(dir = opendir(path)))
 		exit(1);
-	if (!(new = (t_lst *)malloc(sizeof(t_lst))))
+	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
 		exit(1);
-	start = new;
-	new->next = NULL;
+	lst = NULL;
 	while ((ret = readdir(dir)))
-		new = get_info(new, ret->d_name, ft_strjoin(path, ret->d_name));
-	count_total(start);
-	padding(start);
+		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+	count_total(lst);
+	padding(lst);
 
-	//new = lst_sort_ascii(new);
+	lst_sort_ascii(lst);
 
-	display_llst(start);
+	display_llst(lst);
 	closedir(dir);
 }
 

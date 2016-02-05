@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/01 14:09:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/02 14:22:55 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/05 14:24:12 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,14 @@ void	apply_padding(int len_usr, int len_grp, int len_lnk, int len_siz, t_lst *ls
 	t_lst *tmp;
 
 	tmp = lst;
-	while (tmp->next)
+	while (tmp)
 	{
-		tmp = tmp->next;
 		tmp->link = modif_str(tmp->link, len_lnk);
 		tmp->user_id = modif_str(tmp->user_id, len_usr);
 		tmp->group_id = modif_str(tmp->group_id, len_grp);
 		tmp->size = modif_str(tmp->size, len_siz);
+		tmp = tmp->next;
 	}
-	tmp->next = NULL;
 }
 
 void	padding(t_lst *lst)
