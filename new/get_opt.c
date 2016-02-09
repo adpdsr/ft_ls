@@ -6,29 +6,19 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:51:23 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/01/29 14:33:43 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:38:59 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void	init_opt(t_opt *opt)
+void	init_opt(t_opt *opt)
 {
 	opt->l = 0;
 	opt->R = 0;
 	opt->a = 0;
 	opt->r = 0;
 	opt->t = 0;
-}
-
-static void	print_opt(t_opt *opt) // test
-{
-	ft_putendl("--- OPT SAVED ---\n");
-	printf("l is -> %d\n", opt->l);
-	printf("R is -> %d\n", opt->R);
-	printf("a is -> %d\n", opt->a);
-	printf("r is -> %d\n", opt->r);
-	printf("t is -> %d\n\n", opt->t);
 }
 
 static void	err_opt(char *err)
@@ -49,7 +39,6 @@ int			get_opt(char *str, t_opt *opt)
 	int i;
 
 	i = 1;
-	init_opt(opt);
 	while (str[i] && valid_opt(str[i]))
 	{
 		if (str[i] == 'l')
@@ -66,6 +55,5 @@ int			get_opt(char *str, t_opt *opt)
 	}
 	if (str[i])
 		err_opt(&str[i]);
-	print_opt(opt);
 	return (0);
 }
