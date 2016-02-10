@@ -13,141 +13,6 @@
 #include "ft_ls.h"
 #include <stdio.h> // test
 
-static void	count_total(t_lst *lst)
-{
-	int res;
-
-	res = 0;
-	while (lst)
-	{
-		res += lst->blok;
-		lst = lst->next;
-	}
-	ft_putstr("total ");
-	ft_putnbr_endl(res);
-}
-
-void	display_llst(t_lst *lst, int ghost)
-{
-	t_lst *tmp;
-
-	tmp = lst;
-	count_total(lst);
-	if (!ghost)
-	{
-		while (tmp)
-		{
-			if (ft_strncmp(tmp->name, ".", 1))
-			{
-				ft_putstr_s(tmp->perm);
-				ft_putstr_s(tmp->link);
-				ft_putstr_s(tmp->user_id);
-				ft_putstr_s(tmp->group_id);
-				ft_putstr_s(tmp->size);
-				ft_putstr_s(tmp->date);
-				ft_putendl(tmp->name);
-			}
-			tmp = tmp->next;
-		}
-	}
-	else
-	{
-		while (tmp)
-		{
-			ft_putstr_s(tmp->perm);
-			ft_putstr_s(tmp->link);
-			ft_putstr_s(tmp->user_id);
-			ft_putstr_s(tmp->group_id);
-			ft_putstr_s(tmp->size);
-			ft_putstr_s(tmp->date);
-			ft_putendl(tmp->name);
-			tmp = tmp->next;
-		}
-	}
-	lst->next = NULL;
-}
-
-static void	display_rlst(t_lst *lst, int ghost)
-{
-	if (ghost)
-	{
-		if (lst)
-		{
-			display_rlst(lst->next, ghost);
-			ft_putendl(lst->name);
-		}
-	}
-	else
-	{
-		if (lst)
-		{
-			display_rlst(lst->next, ghost);
-			if (ft_strncmp(lst->name, ".", 1))
-				ft_putendl(lst->name);	
-		}
-	}
-}
-
-static void	display_rllst(t_lst *lst, int ghost)
-{
-	if (ghost)
-	{
-		if (lst)
-		{
-			display_rllst(lst->next, ghost);
-			ft_putstr_s(lst->perm);
-			ft_putstr_s(lst->link);
-			ft_putstr_s(lst->user_id);
-			ft_putstr_s(lst->group_id);
-			ft_putstr_s(lst->size);
-			ft_putstr_s(lst->date);
-			ft_putendl(lst->name);
-		}
-	}
-	else
-	{
-		if (lst)
-		{
-			display_rllst(lst->next, ghost);
-			if (ft_strncmp(lst->name, ".", 1))
-			{	
-				ft_putstr_s(lst->perm);
-				ft_putstr_s(lst->link);
-				ft_putstr_s(lst->user_id);
-				ft_putstr_s(lst->group_id);
-				ft_putstr_s(lst->size);
-				ft_putstr_s(lst->date);
-				ft_putendl(lst->name);
-			}
-		}
-	}
-}
-
-void	display_lst(t_lst *lst, int ghost)
-{
-	t_lst *tmp;
-
-	tmp = lst;
-	if (!ghost)
-	{
-		while (tmp)
-		{
-			if (ft_strncmp(tmp->name, ".", 1))
-				ft_putendl(tmp->name);
-			tmp = tmp->next;
-		}
-	}
-	else
-	{
-		while (tmp)
-		{
-			ft_putendl(tmp->name);
-			tmp = tmp->next;
-		}
-	}
-	lst->next = NULL;
-}
-
 char	*add_slash(char *path)
 {
 	if (path[ft_strlen(path) - 1] != '/')
@@ -214,10 +79,10 @@ void	manage_opt(t_lst *lst, t_opt *opt)
 		display_lst(lst, 0);
 	else
 	{
-		if (opt->t)
-			lst = lst_sort_time(lst);
 		if (opt->a)
 			ghost = 1;
+		if (opt->t)
+			lst = lst_sort_time(lst);
 		if (opt->r && opt->l)
 		{
 			printf("r + l\n");
@@ -274,17 +139,19 @@ void	get_param(char *path, t_opt *opt)
 
 int		main(int ac, char **av)
 {
-	int		i;
+	int	i;
 	char	*path;
 	t_opt	opt;
 
 	i = 1;
 	path = NULL;
-	init_opt(&opt);
 	while (i < ac)
 	{
 		if (av[i][0] == '-')
+		{
+			init_opt(&opt);
 			get_opt(av[i], &opt);
+		}
 		else
 		{
 			path = av[i];
