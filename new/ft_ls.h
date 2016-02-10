@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/09 17:39:01 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/10 12:19:42 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	padding(t_lst *lst);
 
 char	*format_size(char *s);
 
-void	display_llst(t_lst *lst);
-void	display_lst(t_lst *lst);
+void	display_llst(t_lst *lst, int ghost);
+void	display_lst(t_lst *lst, int ghost);
 void	lst_add(t_lst **start, t_lst *new);
 void	init_opt(t_opt *opt);
 
