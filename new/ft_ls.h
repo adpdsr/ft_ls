@@ -28,53 +28,53 @@
 
 typedef struct		s_pad
 {
-	size_t			len_usr;
-	size_t			len_grp;
-	size_t			len_lnk;
-	size_t			len_siz;
-}					t_pad;
+	size_t		len_usr;
+	size_t		len_grp;
+	size_t		len_lnk;
+	size_t		len_siz;
+}			t_pad;
 
-typedef struct 		s_opt // stock input opt
+typedef struct 		s_opt
 {
-	int				l;
-	int				R;
-	int				a;
-	int				r;
-	int				t;
-}					t_opt;
+	int		l;
+	int		R;
+	int		a;
+	int		r;
+	int		t;
+}			t_opt;
 
-typedef struct		s_lst // stock file info
+typedef struct		s_lst
 {
-	char			*name; // name of file
-	char			*chem;
-	char			perm[11];
-	char			*user_id; // user name of file
-	char			*group_id; // group name of file
-	char			*date; // date of modif of file
-	int				date_id;
-	int				blok;
-	char			*link;
-	char			*size;
+	char		*name;
+	char		*chem;
+	char		perm[11];
+	char		*user_id;
+	char		*group_id;
+	char		*date;
+	int		date_id;
+	int		blok;
+	char		*link;
+	char		*size;
 	struct s_lst 	*next;
-}					t_lst;
+}			t_lst;
+
+void	ft_putnbr_endl(int n);
+void	ft_putstr_s(char *s);
 
 void	get_param(char *path, t_opt *opt);
-int		get_opt(char *str, t_opt *opt);
 void	padding(t_lst *lst);
 
 char	*format_size(char *s);
 
-void	display_llst(t_lst *lst, int ghost);
-void	display_lst(t_lst *lst, int ghost);
-void	lst_add(t_lst **start, t_lst *new);
+void	display_rllst(t_lst *lst, int hidd);
+void	display_llst(t_lst *lst, int hidd);
+void	display_rlst(t_lst *lst, int hidd);
+void	display_lst(t_lst *lst, int hidd);
+
+int	get_opt(char *str, t_opt *opt);
 void	init_opt(t_opt *opt);
 
 t_lst	*lst_sort_ascii(t_lst *lst);
 t_lst	*lst_sort_time(t_lst *lst);
-
-// basic functions
-
-void	ft_putstr_s(char *s);
-void	ft_putnbr_endl(int n);
 
 #endif
