@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/11 16:07:39 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:47:15 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ typedef struct		s_lst
 	char			*min;
 	struct s_lst 	*next;
 }					t_lst;
+
+char	*add_slash(char *path);
+char	*remove_slash(char *path);
 
 void	ft_putnbr_endl(int n);
 void	ft_putstr_s(char *s);
