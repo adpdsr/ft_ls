@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 11:54:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/02 12:26:16 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:03:08 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_putstr_s(char *s)
 		write(1, &s[i], 1);
 		i++;
 	}
-	ft_putstr("  ");
+	ft_putstr(" ");
 }
 
 void	ft_putnbr_endl(int n)

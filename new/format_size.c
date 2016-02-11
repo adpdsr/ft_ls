@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 10:20:35 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/10 14:33:45 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 14:00:51 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static char	*add_unit(char *s, int size)
 
 static char	*add_dot(char *s, size_t size)
 {
-	size_t toput;
-	char *tmp;
+	size_t	toput;
+	char	*tmp;
 
 	tmp = ft_strnew(size + 1);
 	toput = size % 3;

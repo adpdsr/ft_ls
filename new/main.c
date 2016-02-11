@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/10 14:33:47 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:07:33 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,31 @@ char	*add_slash(char *path)
 	return (path);
 }
 
+static char	get_file_type(struct stat *st, t_lst *lst)
+{
+	char c;
+
+	if (S_ISBLK(st->st_mode))
+		c = 'b';
+	else if (S_ISCHR(st->st_mode))
+		c = 'c';
+	else if (S_ISDIR(st->st_mode))
+		c = 'd';
+	else if (S_ISLNK(st->st_mode))
+		c = 'l';
+	else if (S_ISFIFO(st->st_mode))
+		c = 'p';
+	else if (S_ISSOCK(st->st_mode))
+		c = 's';
+	else
+		c = '-';
+	return (c);
+}
+
 static void get_perm(struct stat *st, t_lst *lst)
 {
 	ft_bzero(lst->perm, 11);
-	lst->perm[0] = (S_ISDIR(st->st_mode)) ? 'd' : '-';
+	lst->perm[0] = get_file_type(st, lst);
 	lst->perm[1] = (st->st_mode & S_IRUSR) ? 'r' : '-';
 	lst->perm[2] = (st->st_mode & S_IWUSR) ? 'w' : '-';
 	lst->perm[3] = (st->st_mode & S_IXUSR) ? 'x' : '-';
@@ -43,6 +64,8 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->link = ft_itoa(st.st_nlink);
 	new->size = format_size(ft_itoa(st.st_size));
 	new->blok = st.st_blocks;
+	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
+	new->min = ft_itoa(minor(st.st_rdev));
 	get_perm(&st, new);
 	new->next = NULL;
 }
@@ -73,47 +96,33 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 
 void	manage_opt(t_lst *lst, t_opt *opt)
 {
-	int ghost;
+	int hidd;
 
+	hidd = 0;
 	if (!opt || (opt->l == 0 && opt->R == 0 && opt->a == 0 && opt->r == 0 && opt->t == 0))
 		display_lst(lst, 0);
 	else
 	{
 		if (opt->a)
-			ghost = 1;
+			hidd = 1;
 		if (opt->t)
 			lst = lst_sort_time(lst);
 		if (opt->r && opt->l)
 		{
-			printf("r + l\n");
-			count_total(lst);
-			display_rllst(lst, ghost);
-			printf("END\n");
+			put_total(lst, hidd);
+			display_rllst(lst, hidd);
 		}
 		else if (opt->r)
-		{
-			printf("r\n");
-			display_rlst(lst, ghost);
-			printf("END\n");
-		}
+			display_rlst(lst, hidd);
 		if (opt->l && (!opt->r))
 		{
-			printf("l\n");
-			display_llst(lst, ghost);
-			printf("END\n");
+			put_total(lst, hidd);
+			display_llst(lst, hidd);
 		}
 		else if (lst && opt->a && (!opt->r))
-		{
-			printf("lst && a\n");
-			display_lst(lst, ghost);
-			printf("END\n");
-		}
+			display_lst(lst, hidd);
 		else if (lst && (!opt->a) && (!opt->r))
-		{
-			printf("lst && !a\n");
-			display_lst(lst, ghost);
-			printf("END\n");
-		}
+			display_lst(lst, hidd);
 	}
 }
 
@@ -124,7 +133,10 @@ void	get_param(char *path, t_opt *opt)
 	t_lst 			*lst;
 
 	if (!(dir = opendir(path)))
+	{
+		printf("TEST KO\n");
 		exit(1);
+	}
 	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
 		exit(1);
 	lst = NULL;
