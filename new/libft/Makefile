@@ -6,7 +6,7 @@
 #    By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 18:10:51 by adu-pelo          #+#    #+#              #
-#    Updated: 2016/01/19 15:34:35 by adu-pelo         ###   ########.fr        #
+#    Updated: 2016/02/11 15:09:36 by adu-pelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,6 +80,7 @@ SRCS = 	ft_atoi.c \
 		ft_strrev.c \
 		ft_memdup.c \
 		ft_sort_int_tab.c \
+		ft_strnjoin.c \
 		# ft_lstpushback.c #
 
 OBJS = $(SRCS:.c=.o)
