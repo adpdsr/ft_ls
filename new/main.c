@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/11 16:07:33 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 17:23:40 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,31 @@ char	*add_slash(char *path)
 	return (path);
 }
 
+char	*remove_slash(char *path)
+{
+	int i;
+
+	i = ft_strlen(path) - 1;
+	if (path[i] == '/')
+		path[i] = '\0';
+	return (path);
+}
+
 static char	get_file_type(struct stat *st, t_lst *lst)
 {
 	char c;
 
-	if (S_ISBLK(st->st_mode))
+	if (S_ISBLK(st->st_mode)) // block special
 		c = 'b';
-	else if (S_ISCHR(st->st_mode))
+	else if (S_ISCHR(st->st_mode)) // character special
 		c = 'c';
-	else if (S_ISDIR(st->st_mode))
+	else if (S_ISDIR(st->st_mode)) // directory
 		c = 'd';
-	else if (S_ISLNK(st->st_mode))
+	else if (S_ISLNK(st->st_mode)) // sym link
 		c = 'l';
-	else if (S_ISFIFO(st->st_mode))
+	else if (S_ISFIFO(st->st_mode)) // named pipe (fifo)
 		c = 'p';
-	else if (S_ISSOCK(st->st_mode))
+	else if (S_ISSOCK(st->st_mode)) // socket
 		c = 's';
 	else
 		c = '-';
@@ -134,7 +144,8 @@ void	get_param(char *path, t_opt *opt)
 
 	if (!(dir = opendir(path)))
 	{
-		printf("TEST KO\n");
+		ft_putstr("ls: ");
+		perror(remove_slash(path));
 		exit(1);
 	}
 	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
@@ -157,13 +168,11 @@ int		main(int ac, char **av)
 
 	i = 1;
 	path = NULL;
+	init_opt(&opt);
 	while (i < ac)
 	{
 		if (av[i][0] == '-')
-		{
-			init_opt(&opt);
 			get_opt(av[i], &opt);
-		}
 		else
 		{
 			path = av[i];
