@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 10:20:35 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/11 14:00:51 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/11 18:02:39 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*add_dot(char *s, size_t size)
 	return (tmp);
 }
 
-char	*format_size(char *s)
+char	*format_size(char *s) // pb a corriger apres sizeX unit dans /usr sur les 3 premiers de la list
 {
 	size_t	size;
 	char	*formated;
@@ -59,5 +59,6 @@ char	*format_size(char *s)
 	}
 	ft_strcpy(formated, s);
 	ft_strcat(formated, end);
+	ft_strjoin(formated, "\0");
 	return (formated);
 }
