@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <stdio.h> // test
 
 static t_lst	*lst_swap(t_lst *p1, t_lst *p2)
 {
