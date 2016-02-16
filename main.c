@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 12:41:12 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/16 17:01:07 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
 	new->min = ft_itoa(minor(st.st_rdev));
 	get_perm(&st, new);
-	new->is_dir = (new->perm[0] == 'd' && ft_strncmp(new->name, ".", 1) && ft_strncmp(new->name, "..", 2));
+	new->is_dir = (new->perm[0] == 'd' && ft_strcmp(new->name, ".") && ft_strcmp(new->name, ".."));
 	new->next = NULL;
 }
 
@@ -129,15 +129,23 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 	{
 		if (lst->is_dir == 1)
 		{
-			all_dir[i] = ft_strdup(lst->name);
-			i++;
+			if (opt->a == 0)
+			{
+				all_dir[i] = ft_strdup(lst->name);
+				i++;
+			}
+			else if (opt->a != 0 && ft_strncmp(lst->name, ".", 1))
+			{
+
+			}
 		}
 		lst = lst->next;
 	}
+	// trier tableau par ordre en fn des options
 	i = -1;
 	while (++i < nb_dir)
 	{
-		if (all_dir[i][0] == '.' && opt->R)
+		if (all_dir[i][0] == '.' && opt->a)
 		{
 			ft_putchar('\n');
 			ft_putstr(ft_strjoin(path, all_dir[i]));
@@ -149,7 +157,7 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 			ft_putstr(ft_strjoin(path, all_dir[i]));
 			ft_putstr(":\n");
 		}
-		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt);
+		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt, 0);
 	}
 }
 
@@ -187,68 +195,106 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	}
 }
 
-void	get_param(char *path, t_opt *opt)
+static char	*get_path(char *path)
+{
+	int i;
+	char *tmp;
+
+	tmp = ft_strdup(path);
+	ft_putendl("tmp");
+	ft_putendl(tmp);
+	if (tmp)
+	{
+		i = ft_strlen(tmp) - 2;
+		while (tmp[i] != '/' && i != 0)
+			i--;
+		if (i == 0)
+			ft_strcpy(tmp, "./");
+		else
+			tmp[i + 1] = '\0';
+	}
+	return (tmp);
+}
+
+static char *get_file_name(char *path)
+{
+	char *file;
+
+	file = ft_strdup(path);
+	file = remove_slash(file);
+	ft_putendl("TEST2");
+	ft_putendl(file);
+	return (file);
+}
+
+void	get_param(char *path, t_opt *opt, int is_file)
 {
 	DIR 			*dir;
 	struct dirent	*ret;
 	t_lst 			*lst;
+	char *tmp;
 
-	if (!(dir = opendir(path)))
+	if (is_file == 0 && !(dir = opendir(path)))
 	{
-		ft_putstr("ls: ");
-		perror(remove_slash(path));
-		exit(1);
+		tmp = get_path(add_slash(path));
+		ft_putendl("PATH");
+		ft_putendl(tmp);
+		if ((dir = opendir(tmp)))
+		{
+			ft_putendl("TEST");
+			while ((ret = readdir(dir)))
+			{
+				ft_putendl("OK");
+			if (ft_strcmp(get_file_name(path), ret->d_name) == 0)
+				lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+			}
+			get_param(path, opt, 1);
+		}
+		else
+		{
+			ft_putstr("ft_ls: ");
+			perror(remove_slash(path));
+			exit(1);
+		}
 	}
 	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
 		exit(1);
 	lst = NULL;
-	while ((ret = readdir(dir)))
-		lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+	if (is_file == 0)
+	{
+		while ((ret = readdir(dir)))
+			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+	}
+	else
+	{
+		ft_putendl("START");
+		ft_putendl(get_file_name(path));
+		ft_putendl("END1");
+		while ((ret = readdir(opendir(tmp))))// && ft_strcmp(get_file_name(path), ret->d_name) == 0)
+		{
+			ft_putendl("TEST3");
+			ft_putendl(ret->d_name);
+			if (ft_strcmp(get_file_name(path), ret->d_name) == 0)
+				lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+		}
+
+	}
 	lst_sort_ascii(lst);
 	if (opt && opt->l)
 		padding(lst);
 	manage_opt(lst, opt, path);
-	closedir(dir);
+	//closedir(dir);
 }
-
-/*static char	**sort_args(int ac, char ***av)
-{
-	int i;
-	int j;
-	char *tmp;
-
-	j = 0;
-	while (j < ac)
-	{
-		i = 0;
-		while ((i + 1)  < ac)
-		{
-			if (ft_strcmp(*(av[i]), *(av[i + 1])) > 0)
-			{
-				tmp = ft_strdup(*(av[i]));
-				free(*(av[i]));
-				*(av[i]) = ft_strdup(*(av[i + 1]));
-				free(*(av[i + 1]));
-				*(av[i + 1]) = ft_strdup(tmp);
-				free(tmp);
-			}
-			i++;
-		}
-		j++;
-	}
-	return (*av);
-}*/
 
 int		main(int ac, char **av)
 {
-	int	i;
+	int		i;
 	char	*path;
 	t_opt	opt;
 
 	i = 1;
 	path = NULL;
 	init_opt(&opt);
-	//av = sort_args(ac, &av);
 	while (i < ac)
 	{
 		if (av[i][0] == '-')
@@ -256,13 +302,13 @@ int		main(int ac, char **av)
 		else
 		{
 			path = av[i];
-			get_param(add_slash(path), &opt);
+			get_param(add_slash(path), &opt, 0);
 			if (av[i + 1])
 				ft_putchar('\n');
 		}
 		i++;
 	}
 	if (path == NULL)
-		get_param("./", &opt);
+		get_param("./", &opt, 0);
 	return (0);
 }

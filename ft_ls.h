@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 12:41:15 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/16 17:01:10 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_putnbr_endl(int n);
 void	ft_putstr_s(char *s);
 void	put_total(t_lst *lst, int hidd);
 
-void	get_param(char *path, t_opt *opt);
+void	get_param(char *path, t_opt *opt, int is_file);
 void	padding(t_lst *lst);
 
 char	*format_size(char *s);
