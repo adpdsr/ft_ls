@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 10:44:57 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/16 12:41:12 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,22 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
 	new->min = ft_itoa(minor(st.st_rdev));
 	get_perm(&st, new);
+	new->is_dir = (new->perm[0] == 'd' && ft_strncmp(new->name, ".", 1) && ft_strncmp(new->name, "..", 2));
 	new->next = NULL;
+}
+
+static int	count_dir(t_lst *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		if (lst->is_dir)
+			i++;
+		lst = lst->next;
+	}
+	return (i);
 }
 
 t_lst	*get_info(t_lst *head, char *file, char *path)
@@ -101,7 +116,44 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 	return (head);
 }
 
-void	manage_opt(t_lst *lst, t_opt *opt)
+static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
+{
+	char			**all_dir;
+	int				i;
+
+	i = 0;
+	if (!(all_dir = (char **)malloc(sizeof(char *) * nb_dir + 1)))
+		exit(1);
+	all_dir[nb_dir + 1] = NULL;
+	while (lst != NULL)
+	{
+		if (lst->is_dir == 1)
+		{
+			all_dir[i] = ft_strdup(lst->name);
+			i++;
+		}
+		lst = lst->next;
+	}
+	i = -1;
+	while (++i < nb_dir)
+	{
+		if (all_dir[i][0] == '.' && opt->R)
+		{
+			ft_putchar('\n');
+			ft_putstr(ft_strjoin(path, all_dir[i]));
+			ft_putstr(":\n");
+		}
+		else if (all_dir[i][0] != '.')
+		{
+			ft_putchar('\n');
+			ft_putstr(ft_strjoin(path, all_dir[i]));
+			ft_putstr(":\n");
+		}
+		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt);
+	}
+}
+
+void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 {
 	int hidd;
 
@@ -130,6 +182,8 @@ void	manage_opt(t_lst *lst, t_opt *opt)
 			display_lst(lst, hidd);
 		else if (lst && (!opt->a) && (!opt->r))
 			display_lst(lst, hidd);
+		if (lst && opt->R)
+			recursive(path, lst, opt, count_dir(lst));
 	}
 }
 
@@ -153,12 +207,11 @@ void	get_param(char *path, t_opt *opt)
 	lst_sort_ascii(lst);
 	if (opt && opt->l)
 		padding(lst);
-	manage_opt(lst, opt);
+	manage_opt(lst, opt, path);
 	closedir(dir);
 }
 
-/*
-void	sort_args(int ac, char **av)
+/*static char	**sort_args(int ac, char ***av)
 {
 	int i;
 	int j;
@@ -183,8 +236,8 @@ void	sort_args(int ac, char **av)
 		}
 		j++;
 	}
-}
-*/
+	return (*av);
+}*/
 
 int		main(int ac, char **av)
 {
@@ -195,7 +248,7 @@ int		main(int ac, char **av)
 	i = 1;
 	path = NULL;
 	init_opt(&opt);
-	// sort_args(int ac, char **av)
+	//av = sort_args(ac, &av);
 	while (i < ac)
 	{
 		if (av[i][0] == '-')
