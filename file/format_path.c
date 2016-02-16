@@ -7,9 +7,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *get_file_name()
+char *get_file_name(char *path)
 {
+	int end;
+	int start;
+	char *tmp;
 
+	end = ft_strlen(path) - 1;
+	start = end;
+	while (path[start] != '/' && start > 0)
+		start--;
+	tmp = ft_strsub(path, start, end);
+	return (tmp);
+	
 }
 
 char *format_path(char *path)
@@ -59,7 +69,7 @@ t_lst	*manage_av_file(char *path)
 		exit(1); //=> error opening file
 	else
 	{
-		filename = get_file_name(path);
+		file_name = get_file_name(path);
 		while (read)
 		{
 			if (ft_strcmp(ret->d_name, file_name) == 0) // si match
