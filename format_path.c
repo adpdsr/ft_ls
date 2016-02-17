@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/17 15:02:51 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 18:26:27 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static char *get_file_name(char *path)
 	else
 		tmp = ft_strsub(path, start + 1, end);
 	return (tmp);
-
 }
 
 static char *format_path(char *path)
@@ -38,29 +37,29 @@ static char *format_path(char *path)
 
 	if (path)
 	{
+		//printf("path = %s\n", path);
+		//remove_slash(path);
+		//printf("path = %s\n", path);
 		i = ft_strlen(path) - 1;
 		if (path[i] == '/')
+		{
+		//	printf("slash a la fin\n");
 			return (NULL);
+		}
 		else
 		{
 			tmp = ft_strdup(path);
-			printf("tmp : %s\n", tmp);
 			while (tmp[i] != '/' && i > 0)
 				i--;
-			printf("i = %d\n", i);
 			if (i == 0)
 			{
 				tmp = ft_strdup("./");
-				//tmp = ft_strdup(path);
-				printf("ret1 : %s\n", tmp);	
-				//tmp = ft_strjoin(tmp, path);
 				//free(path);
 				return (tmp);
 			}
 			else
 			{
 				tmp = add_slash(ft_strndup(path, i));
-				printf("ret2 : %s\n", tmp);	
 				//free(path);
 				return (tmp);
 			}
@@ -76,48 +75,44 @@ t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir)
 	char *file_name;
 	struct dirent *ret;
 
-	printf("path     : %s\n", path);
+	//printf("path im manage file : %s\n", path);
 	formated = format_path(path);
-	printf("formated : %s\n", formated);
-	if (formated != NULL)
-	{
-		printf("formated != NULL\n");
-		formated = ft_strdup(format_path(path));
-	}
+	//printf("formated : %s\n", formated);
 	if (formated == NULL)
 	{
-		printf("formated is NULL\n");
-		ft_putstr("ft_ls: ");
-		perror(remove_slash(path));
-		exit(1);
-	}
-	if (!(dir = opendir(formated)))
-	{
-		printf("opendir failed\n");
 		ft_putstr("ft_ls: ");
 		perror(remove_slash(path));
 		exit(1);
 	}
 	else
+		formated = ft_strdup(format_path(path));
+	if (!(dir = opendir(formated)))
 	{
-		file_name = get_file_name(path);
-		printf("file name : %send\n", file_name);
-		while ((ret = readdir(dir)))
-		{
-			printf("BOUCLE\n");
-			if ((ft_strcmp(ret->d_name, file_name) == 0)) // si match
-			{
-				lst = get_info(lst, ret->d_name, path);
-				printf("lst : %s\nuid : %s\n", lst->name, lst->user_id);
-				break;
-			}
-		}
-		if (!lst)
-		{
-			printf("lst is NULL\n");
-			return (NULL);
-		}
-		return (lst);
+	//	printf("test\n");
+		ft_putstr("ft_ls: ");
+		perror(remove_slash(path));
+	//	printf("test2\n");
+		exit(1);
 	}
-	return (NULL);
+	file_name = get_file_name(path);
+	//printf("file_name : %s\n", file_name);
+	while ((ret = readdir(dir)))
+	{
+	//printf("\n");
+	//printf("ret->d_name : %s\nfile_name : %s\n", ret->d_name, file_name);
+	//printf("\n");
+		if ((ft_strcmp(ret->d_name, file_name) == 0)) // si match
+		{
+			lst = get_info(lst, ret->d_name, path);
+	//		printf("lst : %s\n", lst->name);
+			break;
+		}
+	}
+	if (!lst)
+	{
+	//	printf("lst is NULL\n");
+		return (NULL);
+	}
+	//printf("ret list\n");
+	return (lst);
 }
