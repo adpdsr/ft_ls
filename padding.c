@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/01 14:09:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 12:48:48 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 14:26:13 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	apply_padding(t_pad *pad, t_lst *lst)
 	t_lst *tmp;
 
 	tmp = lst;
-	while (tmp)
+	while (tmp->next) // tmp
 	{
 		tmp->link = put_s_before(tmp->link, pad->len_lnk);
 		tmp->user_id = ft_strnjoin(tmp->user_id, " ", (pad->len_usr - ft_strlen(tmp->user_id)));

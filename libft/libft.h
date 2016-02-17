@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:08:49 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/11 15:09:09 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 12:11:51 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 void				*ft_memalloc(size_t size);
 void				*ft_memdup(const void *s, size_t n);
 char				*ft_strdup(const char *s1);
+char				*ft_strndup(const char *s1, size_t len);
 char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strncpy(char *dst, const char *src, size_t len);
 char				*ft_strcat(char *s1, const char *s2);

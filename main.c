@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 17:01:07 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 14:36:48 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,18 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 
 	new = (t_lst *)malloc(sizeof(t_lst));
 	ptr = head;
+	printf("get info path :%s\n", path);
+	printf("get info file :%s\n", file);
 	if (lstat(path, &st) <= 0)
 	{
 		fill_info(st, new, file);
+		printf("TEST7\n");
 		if (getpwuid(st.st_uid))
 			new->user_id = ft_strdup(getpwuid(st.st_uid)->pw_name);
+		printf("TEST8\n");
 		if (getgrgid(st.st_gid))
 			new->group_id = ft_strdup(getgrgid(st.st_gid)->gr_name);
+		printf("TEST9\n");
 	}
 	if (head == NULL)
 		return (new);
@@ -134,10 +139,10 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 				all_dir[i] = ft_strdup(lst->name);
 				i++;
 			}
-			else if (opt->a != 0 && ft_strncmp(lst->name, ".", 1))
-			{
+			//else if (opt->a != 0 && ft_strncmp(lst->name, ".", 1))
+			//{
 
-			}
+			//}
 		}
 		lst = lst->next;
 	}
@@ -157,7 +162,7 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 			ft_putstr(ft_strjoin(path, all_dir[i]));
 			ft_putstr(":\n");
 		}
-		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt, 0);
+		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt);
 	}
 }
 
@@ -195,93 +200,46 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	}
 }
 
-static char	*get_path(char *path)
-{
-	int i;
-	char *tmp;
-
-	tmp = ft_strdup(path);
-	ft_putendl("tmp");
-	ft_putendl(tmp);
-	if (tmp)
-	{
-		i = ft_strlen(tmp) - 2;
-		while (tmp[i] != '/' && i != 0)
-			i--;
-		if (i == 0)
-			ft_strcpy(tmp, "./");
-		else
-			tmp[i + 1] = '\0';
-	}
-	return (tmp);
-}
-
-static char *get_file_name(char *path)
-{
-	char *file;
-
-	file = ft_strdup(path);
-	file = remove_slash(file);
-	ft_putendl("TEST2");
-	ft_putendl(file);
-	return (file);
-}
-
-void	get_param(char *path, t_opt *opt, int is_file)
+void	get_param(char *path, t_opt *opt)
 {
 	DIR 			*dir;
 	struct dirent	*ret;
 	t_lst 			*lst;
-	char *tmp;
+	int				is_file;
 
-	if (is_file == 0 && !(dir = opendir(path)))
+	is_file = 0;
+	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
+		exit(1);
+	lst = NULL;
+	if (!(dir = opendir(path)))
 	{
-		tmp = get_path(add_slash(path));
-		ft_putendl("PATH");
-		ft_putendl(tmp);
-		if ((dir = opendir(tmp)))
-		{
-			ft_putendl("TEST");
-			while ((ret = readdir(dir)))
-			{
-				ft_putendl("OK");
-			if (ft_strcmp(get_file_name(path), ret->d_name) == 0)
-				lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-			}
-			get_param(path, opt, 1);
-		}
-		else
+		lst = manage_av_file(path, lst, dir);
+		printf("lst = %s\n", lst->name);
+		if (!lst)
 		{
 			ft_putstr("ft_ls: ");
 			perror(remove_slash(path));
 			exit(1);
 		}
+		is_file = 1;
 	}
-	if (!(lst = (t_lst *)malloc(sizeof(t_lst))))
-		exit(1);
-	lst = NULL;
+	printf("TEST1\n");
 	if (is_file == 0)
 	{
+	printf("TEST2\n");
 		while ((ret = readdir(dir)))
-			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+			lst = get_info(lst, ret->d_name, ft_strjoin(add_slash(path), ret->d_name));
+		lst_sort_ascii(lst);
 	}
-	else
-	{
-		ft_putendl("START");
-		ft_putendl(get_file_name(path));
-		ft_putendl("END1");
-		while ((ret = readdir(opendir(tmp))))// && ft_strcmp(get_file_name(path), ret->d_name) == 0)
-		{
-			ft_putendl("TEST3");
-			ft_putendl(ret->d_name);
-			if (ft_strcmp(get_file_name(path), ret->d_name) == 0)
-				lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-		}
-
-	}
-	lst_sort_ascii(lst);
+	printf("TEST3\n");
 	if (opt && opt->l)
-		padding(lst);
+	{
+		printf("lst : %s\nuid : %s\n", lst->name, lst->user_id);
+		printf("TEST4\n");
+		printf("TEST5\n");
+	padding(lst);
+	}
+	printf("TEST6\n");
 	manage_opt(lst, opt, path);
 	//closedir(dir);
 }
@@ -302,13 +260,13 @@ int		main(int ac, char **av)
 		else
 		{
 			path = av[i];
-			get_param(add_slash(path), &opt, 0);
+			get_param(path, &opt);
 			if (av[i + 1])
 				ft_putchar('\n');
 		}
 		i++;
 	}
 	if (path == NULL)
-		get_param("./", &opt, 0);
+		get_param("./", &opt);
 	return (0);
 }

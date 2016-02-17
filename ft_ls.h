@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/16 17:01:10 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 14:36:29 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void	ft_putnbr_endl(int n);
 void	ft_putstr_s(char *s);
 void	put_total(t_lst *lst, int hidd);
 
-void	get_param(char *path, t_opt *opt, int is_file);
+void	get_param(char *path, t_opt *opt);
+
 void	padding(t_lst *lst);
 
 char	*format_size(char *s);
@@ -86,5 +87,8 @@ void	init_opt(t_opt *opt);
 
 t_lst	*lst_sort_ascii(t_lst *lst);
 t_lst	*lst_sort_time(t_lst *lst);
+
+t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir);
+t_lst	*get_info(t_lst *head, char *file, char *path);
 
 #endif
