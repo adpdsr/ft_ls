@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/17 14:36:48 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 15:02:49 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,10 @@ void	get_param(char *path, t_opt *opt)
 	if (!(dir = opendir(path)))
 	{
 		lst = manage_av_file(path, lst, dir);
-		printf("lst = %s\n", lst->name);
-		if (!lst)
+		printf("asdasd\n");
+		//printf("lst = %s\n", lst->name);
+		//printf("asdasd\n");
+		if (lst == NULL)
 		{
 			ft_putstr("ft_ls: ");
 			perror(remove_slash(path));
