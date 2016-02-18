@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 13:03:15 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/18 13:20:27 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 18:26:29 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ t_lst	*lst_sort_ascii(t_lst *lst)
 		lst = lst_swap(lst, lst->next);
 	lst->next = lst_sort_ascii(lst->next);
 	if (lst->next != NULL && ft_strcmp(lst->name, lst->next->name) > 0)
-	{
 		lst = lst_swap(lst, lst->next);
+	//printf("lst : %s\n", lst->name);
 	lst->next = lst_sort_ascii(lst->next);
-	}
 	return (lst);
 }
 
@@ -42,9 +41,7 @@ t_lst	*lst_sort_time(t_lst *lst)
 		lst = lst_swap(lst, lst->next);
 	lst->next = lst_sort_time(lst->next);
 	if (lst->next != NULL && (lst->date_id < lst->next->date_id))
-	{
 		lst = lst_swap(lst, lst->next);
-		lst->next = lst_sort_time(lst->next);
-	}
+	lst->next = lst_sort_time(lst->next);
 	return (lst);
 }

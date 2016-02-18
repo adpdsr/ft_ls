@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/18 13:20:24 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/17 18:26:32 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void get_perm(struct stat *st, t_lst *lst)
 
 static void	fill_info(struct stat st, t_lst *new, char *file)
 {
-	new->name = ft_strdup(file);
+	new->name = file;
 	new->date = ft_strsub(ctime(&st.st_mtime), 4, 12);
 	new->date_id = (int)st.st_mtime;
 	new->link = ft_itoa(st.st_nlink);
@@ -78,18 +78,16 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->next = NULL;
 }
 
-static int	count_dir(t_lst **lst)
+static int	count_dir(t_lst *lst)
 {
 	int i;
-	t_lst *tmp;
 
 	i = 0;
-	tmp = *lst;
-	while (tmp)
+	while (lst)
 	{
-		if (tmp->is_dir)
+		if (lst->is_dir)
 			i++;
-		tmp = tmp->next;
+		lst = lst->next;
 	}
 	return (i);
 }
@@ -113,7 +111,10 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 	if (head == NULL)
 		return (new);
 	while (ptr->next)
+	{
+		//printf("name = %s\n", ptr->name); //
 		ptr = ptr->next;
+	}
 	ptr->next = new;
 	return (head);
 }
@@ -195,16 +196,7 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 		else if (lst && (!opt->a) && (!opt->r))
 			display_lst(lst, hidd);
 		if (lst && opt->R)
-			recursive(path, lst, opt, count_dir(&lst));
-	}
-}
-
-static void	test_lst(t_lst *lst)
-{
-	while (lst)
-	{
-		printf("lst content : %s\n", lst->name);
-		lst = lst->next;
+			recursive(path, lst, opt, count_dir(lst));
 	}
 }
 
@@ -221,11 +213,14 @@ void	get_param(char *path, t_opt *opt)
 	lst = NULL;
 	if (!(dir = opendir(path)))
 	{
+		//printf("av is a file\n");
 		lst = manage_av_file(path, lst, dir);
 		if (lst == NULL)
 		{
+			//printf("lst is NULL\n");
 			ft_putstr("ft_ls: ");
 			perror(path);
+			//printf("lst is NULL\n");
 			exit(1);
 		}
 		is_file = 1;
@@ -233,14 +228,17 @@ void	get_param(char *path, t_opt *opt)
 	else if (is_file == 0)
 	{
 		path = add_slash(path);
+		//ft_putendl("av is a dir");
 		while ((ret = readdir(dir)))
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-	//lst_sort_ascii(lst);
+	lst_sort_ascii(lst);
 	}
 	if (opt && opt->l)
 		padding(lst);
+	//printf("TEST3\n");
 	manage_opt(lst, opt, path);
-	closedir(dir);
+	//printf("TEST4\n");
+	//closedir(dir);
 }
 
 int		main(int ac, char **av)
@@ -259,7 +257,7 @@ int		main(int ac, char **av)
 		else
 		{
 			path = av[i];
-			get_param(path, &opt);
+			get_param(/*add_slash(*/path, &opt);
 			if (av[i + 1])
 				ft_putchar('\n');
 		}
