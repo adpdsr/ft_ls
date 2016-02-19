@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/18 13:20:24 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/19 19:45:39 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*remove_slash(char *path)
 	return (path);
 }
 
-static char	get_file_type(struct stat *st, t_lst *lst)
+static char	get_file_type(struct stat *st)
 {
 	char c;
 
@@ -51,7 +51,7 @@ static char	get_file_type(struct stat *st, t_lst *lst)
 static void get_perm(struct stat *st, t_lst *lst)
 {
 	ft_bzero(lst->perm, 11);
-	lst->perm[0] = get_file_type(st, lst);
+	lst->perm[0] = get_file_type(st);
 	lst->perm[1] = (st->st_mode & S_IRUSR) ? 'r' : '-';
 	lst->perm[2] = (st->st_mode & S_IWUSR) ? 'w' : '-';
 	lst->perm[3] = (st->st_mode & S_IXUSR) ? 'x' : '-';
@@ -120,21 +120,21 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 
 static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 {
-	char			**all_dir;
+	char			**dirs;
 	int				i;
 
 	i = 0;
-	if (!(all_dir = (char **)malloc(sizeof(char *) * nb_dir + 1)))
+	if (!(dirs = (char **)malloc(sizeof(char *) * nb_dir + 1)))
 		exit(1);
-	all_dir[nb_dir + 1] = NULL;
+	dirs[nb_dir + 1] = NULL;
 	while (lst != NULL)
 	{
 		if (lst->is_dir == 1)
 		{
 			if (opt->a == 0)
 			{
-				all_dir[i] = ft_strdup(lst->name);
-				i++;
+					dirs[i] = ft_strdup(lst->name);
+					i++;
 			}
 			//else if (opt->a != 0 && ft_strncmp(lst->name, ".", 1))
 			//{
@@ -147,19 +147,19 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 	i = -1;
 	while (++i < nb_dir)
 	{
-		if (all_dir[i][0] == '.' && opt->a)
+		if (dirs[i][0] == '.' && opt->a)
 		{
 			ft_putchar('\n');
-			ft_putstr(ft_strjoin(path, all_dir[i]));
+			ft_putstr(ft_strjoin(path, dirs[i]));
 			ft_putstr(":\n");
 		}
-		else if (all_dir[i][0] != '.')
+		else if (dirs[i][0] != '.')
 		{
 			ft_putchar('\n');
-			ft_putstr(ft_strjoin(path, all_dir[i]));
+			ft_putstr(ft_strjoin(path, dirs[i]));
 			ft_putstr(":\n");
 		}
-		get_param(ft_strjoin(path, add_slash(all_dir[i])), opt);
+		get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
 	}
 }
 
@@ -168,6 +168,7 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	int hidd;
 
 	hidd = 0;
+	lst = lst_sort_ascii(lst);
 	if (!opt || (opt->l == 0 && opt->R == 0 && opt->a == 0 && opt->r == 0 && opt->t == 0))
 		display_lst(lst, 0);
 	else
@@ -199,15 +200,6 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	}
 }
 
-static void	test_lst(t_lst *lst)
-{
-	while (lst)
-	{
-		printf("lst content : %s\n", lst->name);
-		lst = lst->next;
-	}
-}
-
 void	get_param(char *path, t_opt *opt)
 {
 	DIR 			*dir;
@@ -226,7 +218,7 @@ void	get_param(char *path, t_opt *opt)
 		{
 			ft_putstr("ft_ls: ");
 			perror(path);
-			exit(1);
+			return ;
 		}
 		is_file = 1;
 	}
@@ -235,12 +227,11 @@ void	get_param(char *path, t_opt *opt)
 		path = add_slash(path);
 		while ((ret = readdir(dir)))
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
-	//lst_sort_ascii(lst);
+		closedir(dir);
 	}
 	if (opt && opt->l)
 		padding(lst);
 	manage_opt(lst, opt, path);
-	closedir(dir);
 }
 
 int		main(int ac, char **av)

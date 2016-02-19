@@ -6,11 +6,12 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/01 14:09:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/18 12:03:31 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/19 19:43:24 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#include <stdio.h> // test
 
 static void	init_pad(t_pad *pad)
 {
@@ -20,6 +21,7 @@ static void	init_pad(t_pad *pad)
 	pad->len_siz = 0;
 	pad->len_maj = 0;
 	pad->len_min = 0;
+	pad->len_majmin = 0;
 }
 
 static char	*put_s_before(char *str, int max)
@@ -55,15 +57,20 @@ static void	apply_padding(t_pad *pad, t_lst *lst)
 	t_lst *tmp;
 
 	tmp = lst;
-	while (tmp)
+	if (tmp->next)
 	{
-		tmp->link = put_s_before(tmp->link, pad->len_lnk);
-		tmp->user_id = ft_strnjoin(tmp->user_id, " ", (pad->len_usr - ft_strlen(tmp->user_id)));
-		tmp->group_id = ft_strnjoin(tmp->group_id, " ", (pad->len_grp - ft_strlen(tmp->group_id)));
-		tmp->size = put_s_before(tmp->size, pad->len_siz);
-		tmp->maj = put_s_before(tmp->maj, pad->len_maj);
-		tmp->min = put_s_before(tmp->min, pad->len_min);
-		tmp = tmp->next;
+		while (tmp)
+		{
+			tmp->link = put_s_before(tmp->link, pad->len_lnk);
+			tmp->user_id = ft_strnjoin(tmp->user_id, " ", (pad->len_usr - ft_strlen(tmp->user_id)));
+			tmp->group_id = ft_strnjoin(tmp->group_id, " ", (pad->len_grp - ft_strlen(tmp->group_id)));
+			tmp->size = put_s_before(tmp->size, pad->len_siz);
+			tmp->maj = put_s_before(tmp->maj, pad->len_maj);
+			tmp->min = put_s_before(tmp->min, pad->len_min);
+			tmp->majmin = ft_strjoin(tmp->maj, " ");
+			tmp->majmin = ft_strjoin(tmp->majmin, tmp->min);
+			tmp = tmp->next;
+		}
 	}
 }
 
@@ -90,5 +97,6 @@ void		padding(t_lst *lst)
 			pad.len_min = ft_strlen(tmp->next->min);
 		tmp = tmp->next;
 	}
+	pad.len_majmin = pad.len_maj + pad.len_min;
 	apply_padding(&pad, lst);
 }

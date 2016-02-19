@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/17 14:36:29 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/19 19:40:53 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct		s_pad
 	size_t			len_siz;
 	size_t			len_maj;
 	size_t			len_min;
+	size_t			len_majmin;
 }					t_pad;
 
 typedef struct 		s_opt
@@ -60,6 +61,7 @@ typedef struct		s_lst
 	char			*size;
 	char			*maj;
 	char			*min;
+	char			*majmin;
 	struct s_lst 	*next;
 }					t_lst;
 
@@ -90,5 +92,7 @@ t_lst	*lst_sort_time(t_lst *lst);
 
 t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir);
 t_lst	*get_info(t_lst *head, char *file, char *path);
+
+char	*format_path(char *path);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/18 11:58:45 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/19 18:19:13 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char *get_file_name(char *path)
 	return (tmp);
 }
 
-static char *format_path(char *path)
+char *format_path(char *path)
 {
 	int	i;
 	char	*tmp;
@@ -74,26 +74,31 @@ t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir)
 	{
 		ft_putstr("ft_ls: ");
 		perror(remove_slash(path));
-		exit(1);
+		exit(1); // return ;
 	}
-	else
-		formated = ft_strdup(format_path(path));
+	//else
+	//	formated = ft_strdup(format_path(path));
 	if (!(dir = opendir(formated)))
 	{
 		ft_putstr("ft_ls: ");
 		perror(remove_slash(path));
 		exit(1);
 	}
-	file_name = get_file_name(path);
-	while ((ret = readdir(dir)))
+	else
 	{
-		if ((ft_strcmp(ret->d_name, file_name) == 0)) // si match
+		file_name = get_file_name(path);
+		while ((ret = readdir(dir)))
 		{
-			lst = get_info(lst, ret->d_name, path);
-			break;
+			if ((ft_strcmp(ret->d_name, file_name) == 0)) // si match
+			{
+				lst = get_info(lst, ret->d_name, path);
+				break;
+			}
 		}
+		if (!lst)
+			return (NULL);
+		closedir(dir);
+		return (lst);
 	}
-	if (!lst)
-		return (NULL);
-	return (lst);
+	return (NULL);
 }
