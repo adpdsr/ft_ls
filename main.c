@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/20 16:36:17 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/20 18:39:42 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void	get_param(char *path, t_opt *opt)
 		while ((ret = readdir(dir)))
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
 		closedir(dir);
+		ft_putchar('\n');
 	}
 	if (opt && opt->l)
 		padding(lst);
@@ -242,24 +243,20 @@ int		main(int ac, char **av)
 	t_opt	opt;
 
 	i = 1;
-	flag = 0;
+	flag = 1;
 	path = NULL;
 	init_opt(&opt);
-	while (i < ac)
+	while (av[i][0] == '-')
 	{
-		if (av[i][0] == '-')
-		{
-			get_opt(av[i], &opt);
-			flag++;
-		}
-		else
-		{
-			sort_tab(av, &opt, flag);
-			path = av[i];
-			get_param(path, &opt);
-			if (av[i + 1])
-				ft_putchar('\n');
-		}
+		flag++;
+		i++;
+	}
+	av = create_tab(av, &opt, ac, flag);
+	i = 0;
+	while (i < ac - flag)
+	{
+		path = av[i];
+		get_param(path, &opt);
 		i++;
 	}
 	if (path == NULL)
