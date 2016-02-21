@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 18:21:28 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/21 18:56:48 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,11 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 {
 	char			**dirs;
 	int				i;
+	int				j;
 
 	i = 0;
 	if (!(dirs = (char **)malloc(sizeof(char *) * nb_dir + 1)))
 		exit(1);
-	dirs[nb_dir + 1] = NULL;
 	while (lst)
 	{
 		if (lst->is_dir == 1)
@@ -144,10 +144,15 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 		}
 		lst = lst->next;
 	}
+	dirs[i] = NULL;
+	if (opt && opt->t == 1)
+	{
+
+	}
 	// trier tableau par ordre en fn des options
-	i = -1;
 	if (opt->r == 0)
 	{
+		i = -1;
 		while (++i < nb_dir) // si pas opt->r
 		{
 			if (dirs[i])
@@ -161,17 +166,17 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 	}
 	else if (opt->r == 1)
 	{
-		i = nb_dir -1; // -1 ?
-		while (i > 0)
+		j = nb_dir;
+		while (j > -1)
 		{
-			if (dirs[i])
+			if (dirs[j])
 			{
 				ft_putchar('\n');
-				ft_putstr(ft_strjoin(path, dirs[i]));
+				ft_putstr(ft_strjoin(path, dirs[j]));
 				ft_putstr(":\n");
-				get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
+				get_param(ft_strjoin(path, add_slash(dirs[j])), opt);
 			}
-			i--;
+			j--;
 		}
 	}
 }
