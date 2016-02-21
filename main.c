@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 18:56:48 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/21 19:34:52 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,6 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 		lst = lst->next;
 	}
 	dirs[i] = NULL;
-	if (opt && opt->t == 1)
-	{
-
-	}
 	// trier tableau par ordre en fn des options
 	if (opt->r == 0)
 	{
@@ -275,7 +271,7 @@ int		main(int ac, char **av)
 		if (ac > flag)
 			av = create_tab(av, &opt, ac, flag);
 		i = 0;
-		if (ac > 2)
+		if (ac > 1)
 		{
 			while (i < ac - flag)
 			{

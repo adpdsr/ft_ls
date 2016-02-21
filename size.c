@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 10:20:35 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/19 17:58:14 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/21 19:34:54 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 static char	*add_unit(int size)
 {
 	if (size >= 1 && size <= 3)
-		return (" B");
+		return (" B\0");
 	else if (size >= 4 && size <= 6)
-		return (" K");
+		return (" K\0");
 	else if (size >= 7 && size <= 9)
-		return (" M");
+		return (" M\0");
 	else if (size >= 10 && size <= 13)
-		return (" G");
+		return (" G\0");
 	else
-		return (" T");
+		return (" T\0");
 }
 
 static char	*add_dot(char *s, size_t size)
