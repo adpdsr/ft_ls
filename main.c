@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/20 18:39:42 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/21 18:21:28 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,39 +127,52 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 	if (!(dirs = (char **)malloc(sizeof(char *) * nb_dir + 1)))
 		exit(1);
 	dirs[nb_dir + 1] = NULL;
-	while (lst != NULL)
+	while (lst)
 	{
 		if (lst->is_dir == 1)
 		{
-			if (opt->a == 0)
+			if (opt->a == 0 && lst->name[0] != '.')
 			{
-					dirs[i] = ft_strdup(lst->name);
-					i++;
+				dirs[i] = ft_strdup(lst->name);
+				i++;
 			}
-			//else if (opt->a != 0 && ft_strncmp(lst->name, ".", 1))
-			//{
-
-			//}
+			else if (opt->a != 0)
+			{
+				dirs[i] = ft_strdup(lst->name);
+				i++;	
+			}
 		}
 		lst = lst->next;
 	}
 	// trier tableau par ordre en fn des options
 	i = -1;
-	while (++i < nb_dir)
+	if (opt->r == 0)
 	{
-		if (dirs[i][0] == '.' && opt->a)
+		while (++i < nb_dir) // si pas opt->r
 		{
-			ft_putchar('\n');
-			ft_putstr(ft_strjoin(path, dirs[i]));
-			ft_putstr(":\n");
+			if (dirs[i])
+			{
+				ft_putchar('\n');
+				ft_putstr(ft_strjoin(path, dirs[i]));
+				ft_putstr(":\n");
+				get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
+			}
 		}
-		else if (dirs[i][0] != '.')
+	}
+	else if (opt->r == 1)
+	{
+		i = nb_dir -1; // -1 ?
+		while (i > 0)
 		{
-			ft_putchar('\n');
-			ft_putstr(ft_strjoin(path, dirs[i]));
-			ft_putstr(":\n");
+			if (dirs[i])
+			{
+				ft_putchar('\n');
+				ft_putstr(ft_strjoin(path, dirs[i]));
+				ft_putstr(":\n");
+				get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
+			}
+			i--;
 		}
-		get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
 	}
 }
 
@@ -228,7 +241,7 @@ void	get_param(char *path, t_opt *opt)
 		while ((ret = readdir(dir)))
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
 		closedir(dir);
-		ft_putchar('\n');
+		//ft_putchar('\n');
 	}
 	if (opt && opt->l)
 		padding(lst);
@@ -238,7 +251,7 @@ void	get_param(char *path, t_opt *opt)
 int		main(int ac, char **av)
 {
 	int		i;
-	int flag;
+	int		flag;
 	char	*path;
 	t_opt	opt;
 
@@ -246,18 +259,26 @@ int		main(int ac, char **av)
 	flag = 1;
 	path = NULL;
 	init_opt(&opt);
-	while (av[i][0] == '-')
+	if (ac > 1)
 	{
-		flag++;
-		i++;
-	}
-	av = create_tab(av, &opt, ac, flag);
-	i = 0;
-	while (i < ac - flag)
-	{
-		path = av[i];
-		get_param(path, &opt);
-		i++;
+		while (av[i] && av[i][0] == '-')
+		{
+			get_opt(av[i], &opt);
+			flag++;
+			i++;
+		}
+		if (ac > flag)
+			av = create_tab(av, &opt, ac, flag);
+		i = 0;
+		if (ac > 2)
+		{
+			while (i < ac - flag)
+			{
+				path = av[i];
+				get_param(path, &opt);
+				i++;
+			}
+		}
 	}
 	if (path == NULL)
 		get_param("./", &opt);

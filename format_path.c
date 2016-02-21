@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/19 18:19:13 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/21 18:15:06 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir)
 	{
 		ft_putstr("ft_ls: ");
 		perror(remove_slash(path));
-		exit(1); // return ;
+		return (NULL); // exit ok
 	}
 	//else
 	//	formated = ft_strdup(format_path(path));
