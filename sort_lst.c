@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 13:03:15 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 18:56:52 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 14:54:45 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_lst	*lst_swap(t_lst *p1, t_lst *p2)
 	return (p2);
 }
 
-t_lst	*lst_sort_ascii(t_lst *lst)
+t_lst			*lst_sort_ascii(t_lst *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -34,7 +34,7 @@ t_lst	*lst_sort_ascii(t_lst *lst)
 	return (lst);
 }
 
-t_lst	*lst_sort_time(t_lst *lst)
+t_lst			*lst_sort_time(t_lst *lst)
 {
 	if (lst == NULL)
 		return (NULL);

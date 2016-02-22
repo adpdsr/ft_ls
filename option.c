@@ -6,13 +6,13 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:51:23 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 17:55:21 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 14:54:12 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	init_opt(t_opt *opt)
+void		init_opt(t_opt *opt)
 {
 	opt->l = 0;
 	opt->R = 0;
@@ -29,7 +29,7 @@ static void	err_opt(char *err)
 	exit(1);
 }
 
-static int 	valid_opt(char o)
+static int	valid_opt(char o)
 {
 	return ((o == 'l' || o == 'R' || o == 'a' || o == 'r' || o == 't'));
 }

@@ -6,18 +6,17 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 19:29:58 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 14:53:24 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <stdio.h> // test
 
-static char *get_file_name(char *path)
+static char	*get_file_name(char *path)
 {
-	int end;
-	int start;
-	char *tmp;
+	int		end;
+	int		start;
+	char	*tmp;
 
 	end = ft_strlen(path) - 1;
 	start = end;
@@ -30,50 +29,42 @@ static char *get_file_name(char *path)
 	return (tmp);
 }
 
-char *format_path(char *path)
+static char	*format_path(char *path)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
-	if (path)
+	i = ft_strlen(path) - 1;
+	if (path[i] == '/')
+		return (NULL);
+	else
 	{
-		i = ft_strlen(path) - 1;
-		if (path[i] == '/')
-			return (NULL);
+		tmp = ft_strdup(path);
+		while (tmp[i] != '/' && i > 0)
+			i--;
+		if (i == 0)
+		{
+			tmp = ft_strdup("./");
+			return (tmp);
+		}
 		else
 		{
-			tmp = ft_strdup(path);
-			while (tmp[i] != '/' && i > 0)
-				i--;
-			if (i == 0)
-			{
-				tmp = ft_strdup("./");
-				//free(path);
-				return (tmp);
-			}
-			else
-			{
-				tmp = add_slash(ft_strndup(path, i));
-				//free(path);
-				return (tmp);
-			}
+			tmp = add_slash(ft_strndup(path, i));
+			return (tmp);
 		}
 	}
-	else
-		return (NULL);
+	return (NULL);
 }
 
-t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir)
+t_lst		*manage_av_file(char *path, t_lst *lst, DIR *dir)
 {
-	char *formated;
-	char *file_name;
-	struct dirent *ret;
+	char			*formated;
+	char			*file_name;
+	struct dirent	*ret;
 
 	formated = format_path(path);
 	if (formated == NULL)
-		return (NULL); // exit ok
-	//else
-	//	formated = ft_strdup(format_path(path));
+		return (NULL);
 	if (!(dir = opendir(formated)))
 	{
 		ft_putstr("ft_ls: ");
@@ -84,13 +75,11 @@ t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir)
 	{
 		file_name = get_file_name(path);
 		while ((ret = readdir(dir)))
-		{
-			if ((ft_strcmp(ret->d_name, file_name) == 0)) // si match
+			if ((ft_strcmp(ret->d_name, file_name) == 0))
 			{
 				lst = get_info(lst, ret->d_name, path);
-				break;
+				break ;
 			}
-		}
 		if (!lst)
 			return (NULL);
 		closedir(dir);

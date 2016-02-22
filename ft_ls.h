@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/20 18:08:33 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 15:03:10 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,5 @@ t_lst	*lst_sort_time(t_lst *lst);
 
 t_lst	*manage_av_file(char *path, t_lst *lst, DIR *dir);
 t_lst	*get_info(t_lst *head, char *file, char *path);
-
-char	*format_path(char *path);
 
 #endif

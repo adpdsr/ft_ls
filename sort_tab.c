@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 17:51:41 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 15:03:09 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static int	is_what(char *tab)
 	if ((dir = opendir(tab)))
 	{
 		closedir(dir);
-		return (1); // is dir
+		return (1);
 	}
 	else if (!stat(tab, &st))
-		return (0); // is file
+		return (0);
 	else
-		return (-1); // is none
+		return (-1);
 }
 
 static void		sort_tab(char **tab, t_opt *opt, int flag)

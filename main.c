@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/21 19:34:52 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/02/22 15:03:07 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->size = format_size(ft_itoa(st.st_size));
 	new->blok = st.st_blocks;
 	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
-	new->min = ft_itoa(minor(st.st_rdev));
+	new->min = ft_strdup(ft_itoa(minor(st.st_rdev)));
 	get_perm(&st, new);
 	new->is_dir = (new->perm[0] == 'd' && ft_strcmp(new->name, ".") && ft_strcmp(new->name, ".."));
 	new->next = NULL;
@@ -145,11 +145,10 @@ static void recursive(char *path, t_lst *lst, t_opt *opt, int nb_dir)
 		lst = lst->next;
 	}
 	dirs[i] = NULL;
-	// trier tableau par ordre en fn des options
 	if (opt->r == 0)
 	{
 		i = -1;
-		while (++i < nb_dir) // si pas opt->r
+		while (++i < nb_dir)
 		{
 			if (dirs[i])
 			{
@@ -185,7 +184,7 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	lst = lst_sort_ascii(lst);
 	if (!opt || (opt->l == 0 && opt->R == 0 && opt->a == 0 && opt->r == 0 && opt->t == 0))
 		display_lst(lst, 0);
-	else
+	else if (lst)
 	{
 		if (opt->a)
 			hidd = 1;
@@ -205,11 +204,11 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 				put_total(lst, hidd);
 			display_llst(lst, hidd);
 		}
-		else if (lst && opt->a && (!opt->r))
+		else if (opt->a && (!opt->r))
 			display_lst(lst, hidd);
-		else if (lst && (!opt->a) && (!opt->r))
+		else if ((!opt->a) && (!opt->r))
 			display_lst(lst, hidd);
-		if (lst && opt->R)
+		if (opt->R)
 			recursive(path, lst, opt, count_dir(&lst));
 	}
 }
@@ -242,7 +241,6 @@ void	get_param(char *path, t_opt *opt)
 		while ((ret = readdir(dir)))
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
 		closedir(dir);
-		//ft_putchar('\n');
 	}
 	if (opt && opt->l)
 		padding(lst);
