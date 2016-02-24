@@ -20,7 +20,7 @@ static char	*add_unit(int size)
 		return (" K");
 	else if (size >= 7 && size <= 9)
 		return (" M");
-	else if (size >= 10 && size <= 13)
+	else if (size >= 10 && size <= 12)
 		return (" G");
 	else
 		return (" T");
@@ -33,13 +33,19 @@ static char	*add_dot(char *s, size_t size)
 
 	toput = size % 3;
 	((toput == 0)) ? toput = 3 : toput;
-	tmp = ft_strnew(size + 1);
+	printf("s = %s\n", s);
+	printf("malloc = %zu\n", toput + 6);
+	tmp = ft_strnew(toput + 4);
+	//if (!(tmp = (char *)malloc(sizeof(char) * toput + 5)))
+	//	return (NULL);
+	tmp = ft_strnew(toput + 7);
 	ft_strncpy(tmp, s, toput);
-	ft_strncat(tmp, ".", 1);
+	ft_strcat(tmp, ".");
 	if (s[toput] && s[toput + 1] && s[toput + 2])
 	{
 		tmp[toput + 1] = s[toput];
 		tmp[toput + 2] = s[toput + 1];
+		tmp[toput + 3] = '\0';
 	}
 	return (tmp);
 }
@@ -51,7 +57,13 @@ char	*format_size(char *s)
 	char	*end;
 
 	size = ft_strlen(s);
-	formated = ft_strnew(size + 1);
+	if (size == 1 && (!ft_atoi(s)))
+	{
+		free(s);
+		s = NULL;
+		return (ft_strdup("0 B"));
+	}
+	formated = ft_strnew(size); // ??
 	end = ft_strdup(add_unit(size));
 	if (size >= 4)
 	{
@@ -63,13 +75,14 @@ char	*format_size(char *s)
 		end = NULL;
 		return (formated);
 	}
-	ft_strcpy(formated, s);
+	else
+		return (ft_strjoin(s, end));
+	ft_strjoin(formated, s);
 	free(s);
 	s = NULL;
-	ft_strcat(formated, end);
+	ft_strjoin(formated, end);
 	free(end);
 	end = NULL;
-	ft_strjoin(formated, "\0");
 	return (formated);
 }
 

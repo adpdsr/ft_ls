@@ -70,8 +70,9 @@ static void	fill_info(struct stat st, t_lst *new, char *file)
 	new->link = ft_itoa(st.st_nlink);
 	new->size = format_size(ft_itoa(st.st_size));
 	new->blok = st.st_blocks;
-	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
-	new->min = ft_strdup(ft_itoa(minor(st.st_rdev)));
+	new->maj = ft_itoa(major(st.st_rdev));
+	new->maj = ft_strjoin(new->maj, ",");
+	new->min = ft_itoa(minor(st.st_rdev));
 	get_perm(&st, new);
 	new->is_dir = (new->perm[0] == 'd' && ft_strcmp(new->name, ".") && ft_strcmp(new->name, ".."));
 	new->next = NULL;
@@ -99,21 +100,30 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 	t_lst			*new;
 	t_lst			*ptr;
 
-	new = (t_lst *)malloc(sizeof(t_lst)); // protect
+	if (!(new = (t_lst *)malloc(sizeof(t_lst)))) // protect
+		return (NULL);
 	ptr = head;
 	if (lstat(path, &st) <= 0)
 	{
+		printf("start fill info\n");
 		fill_info(st, new, file);
+		printf("end fill info\n");
 		//if (getpwuid(st.st_uid))
 		//	new->user_id = ft_strdup(getpwuid(st.st_uid)->pw_name);
 		//if (getgrgid(st.st_gid))
 		//	new->group_id = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	}
+	printf("start add node\n");
 	if (head == NULL)
+{
+		printf("end add node\n");
 		return (new);
+}
 	while (ptr->next)
 		ptr = ptr->next;
 	ptr->next = new;
+	printf("end add node\n");
+	//new->next = NULL; //
 	return (head);
 }
 
@@ -180,35 +190,46 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	int hidd;
 
 	hidd = 0;
-	lst = lst_sort_ascii(lst);
+	t_lst *tmp;
+	tmp = lst;
+	tmp = lst_sort_ascii(lst);
 	if (!opt || (opt->l == 0 && opt->R == 0 && opt->a == 0 && opt->r == 0 && opt->t == 0))
-		display_lst(lst, 0);
-	else if (lst)
+		display_lst(tmp, 0);
+	else if (tmp)
 	{
 		if (opt->a)
 			hidd = 1;
 		if (opt->t)
-			lst = lst_sort_time(lst);
+			tmp = lst_sort_time(tmp);
 		if (opt->r && opt->l)
 		{
-			if (lst->next != NULL)
-				put_total(lst, hidd);
-			display_rllst(lst, hidd);
+			if (tmp->next != NULL)
+				put_total(tmp, hidd);
+			display_rllst(tmp, hidd);
 		}
 		else if (opt->r)
-			display_rlst(lst, hidd);
+			display_rlst(tmp, hidd);
 		if (opt->l && (!opt->r))
 		{
-			if (lst->next != NULL)
-				put_total(lst, hidd);
-			display_llst(lst, hidd);
+			if (tmp->next != NULL)
+				put_total(tmp, hidd);
+			display_llst(tmp, hidd);
 		}
 		else if (opt->a && (!opt->r))
-			display_lst(lst, hidd);
+			display_lst(tmp, hidd);
 		else if ((!opt->a) && (!opt->r))
-			display_lst(lst, hidd);
+			display_lst(tmp, hidd);
 		if (opt->R)
-			recursive(path, lst, opt, count_dir(&lst));
+			recursive(path, tmp, opt, count_dir(&lst));
+	}
+}
+
+void	dsp_lst(t_lst *lst)
+{
+	while (lst)
+	{
+	printf("lst->name == %s\n", lst->name);
+	lst = lst->next;
 	}
 }
 
@@ -218,53 +239,73 @@ void	free_lst(t_lst *lst)
 	t_lst *tmp;
 
 	cnt = 0;
-	while (lst)
+tmp = NULL;
+	tmp = lst;
+	dsp_lst(tmp);
+	printf("start free lst\n");
+	while (tmp)
 	{
 		cnt++;
-		tmp = lst->next;
-		if (lst->name)
+		//printf("lst = tmp1\n");
+		if (tmp->name)
 		{
-			printf("free : %s\n", lst->name);
-			free(lst->name);
+			printf("free : %s\n", tmp->name);
+			free(tmp->name);
+			tmp->name = NULL;
 		}
-		if (lst->date)
+		//printf("lst = tmp2\n");
+		if (tmp->date)
 		{
-		//	printf("free : %s\n", lst->date);
-			free(lst->date);
+			//	printf("free : %s\n", lst->date);
+			free(tmp->date);
+			tmp->date = NULL;
 		}
-		if (lst->link)
+		//printf("lst = tmp3\n");
+		if (tmp->link)
 		{
-		//	printf("free : %s\n", lst->link);
-			free(lst->link);
+			//	printf("free : %s\n", lst->link);
+			free(tmp->link);
+			tmp->link = NULL;
 		}
-		if (lst->size)
+	//	printf("lst = tmp4\n");
+		if (tmp->size)
 		{
-			printf("free : %s\n", lst->size);
-			free(lst->size);
+	//		printf("free : %s\n", lst->size);
+			free(tmp->size);
+			tmp->size = NULL;
 		}
-		if (lst->maj)
+	//	printf("lst = tmp5\n");
+		if (tmp->maj)
 		{
-		//	printf("free : %s\n", lst->maj);
-			free(lst->maj);
+			//	printf("free : %s\n", lst->maj);
+			free(tmp->maj);
+			tmp->maj = NULL;
 		}
-		if (lst->min)
+	//	printf("lst = tmp6\n");
+		if (tmp->min)
 		{
-		//	printf("free : %s\n", lst->min);
-			free(lst->min);
+			//	printf("free : %s\n", lst->min);
+			free(tmp->min);
+			tmp->min = NULL;
 		}
-		if (lst->majmin)
+	//	printf("lst = tmp7\n");
+		if (tmp->majmin)
 		{
-		//	printf("free : %s\n", lst->majmin);
+			//	printf("free : %s\n", lst->majmin);
 			free(lst->majmin);
+			tmp->majmin = NULL;
 		}
 		//	free(lst);
+	//	printf("lst = tmp8\n");
 		lst = tmp;
+		tmp = tmp->next;
 	}
+	//printf("name === %s\n", tmp->name);	
 	printf("nb nodes deleted : %d\n", cnt);
+	printf("end free lst\n");
 	//free(lst);
 	//lst = NULL;
 }
-
 
 void	get_param(char *path, t_opt *opt)
 {
@@ -292,7 +333,12 @@ void	get_param(char *path, t_opt *opt)
 	{
 		path = add_slash(path);
 		while ((ret = readdir(dir)))
+{
+			printf("start get info\n");
+			printf("ret->d_name = %s\n", ret->d_name);
 			lst = get_info(lst, ret->d_name, ft_strjoin(path, ret->d_name));
+			printf("end get info\n");
+}
 		closedir(dir);
 	}
 	if (opt && opt->l)
@@ -301,11 +347,29 @@ void	get_param(char *path, t_opt *opt)
 	free_lst(lst);
 }
 
+void	free_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	printf("start free tab\n");
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+	//	tab[i] = NULL;
+		i++;
+	}
+	printf("end free tab\n");
+	//free(tab);
+	//tab = NULL;
+}
+
 int		main(int ac, char **av)
 {
 	int		i;
 	int		flag;
 	char	*path;
+	char 	**args;
 	t_opt	opt;
 
 	i = 1;
@@ -316,24 +380,32 @@ int		main(int ac, char **av)
 	{
 		while (av[i] && av[i][0] == '-')
 		{
+			printf("start get opt\n");
 			get_opt(av[i], &opt);
+			printf("end get opt\n");
 			flag++;
 			i++;
 		}
 		if (ac > flag)
-			av = create_tab(av, &opt, ac, flag);
+			args = create_tab(av, &opt, ac, flag);
 		i = 0;
 		if (ac > 1)
 		{
-			while (i < ac - flag)
+			printf("i = %d | ac - flag = %d\n", i, ac - flag - 1);
+			while (i < (ac - flag))
 			{
-				path = av[i];
+			printf("args[i] = %s\n", args[i]);
+				path = args[i];
 				get_param(path, &opt);
 				i++;
 			}
+			//free(path);
+			//path = NULL;
 		}
 	}
 	if (path == NULL)
 		get_param("./", &opt);
+	else
+		free_tab(args);
 	return (0);
 }

@@ -60,6 +60,8 @@ static void		sort_tab(char **tab, t_opt *opt, int flag)
 	}
 }
 
+#include <stdio.h>
+
 char	**create_tab(char **av, t_opt *opt, int ac, int flag)
 {
 	int i;
@@ -69,7 +71,7 @@ char	**create_tab(char **av, t_opt *opt, int ac, int flag)
 	i = flag;
 	j = 0;
 	sort_tab(av, opt, flag);
-	if (!(tab = (char **)malloc(sizeof(char *) * ac + 1)))
+	if (!(tab = (char **)malloc(sizeof(char *) * (ac - flag) + 1)))
 		return (NULL);
 	while (i < ac)
 	{

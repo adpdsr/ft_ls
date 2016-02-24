@@ -25,14 +25,16 @@ static void	init_pad(t_pad *pad, t_lst *lst)
 
 static char	*put_s_before(char *str, int max)
 {
-	int		i;
-	int		j;
-	int		k;
+	int	i;
+	int	j;
+	int	k;
 	char	*tmp;
 
 	i = 0;
 	j = max - (int)ft_strlen(str);
-	if (!(tmp = malloc(sizeof(char) * ft_strlen(str) + 1)))
+	printf("str = %s\n", str);
+	printf("ft_strlen(str) + 1 = %zu\n", ft_strlen(str) + j);
+	if (!(tmp = malloc(sizeof(char) * ft_strlen(str) + j + 1)))
 		return (NULL);
 	if (j > 0)
 	{
@@ -45,10 +47,16 @@ static char	*put_s_before(char *str, int max)
 				tmp[i++] = str[k++];
 			i++;
 		}
+		printf("i = %d\n", i);
+		printf("tmp = |%s|\n", tmp);
 		return (tmp);
 	}
 	else
+{
+free(tmp);
+tmp = NULL;
 		return (str);
+}
 }
 
 static void	apply_padding(t_pad *pad, t_lst *lst)
@@ -60,6 +68,7 @@ static void	apply_padding(t_pad *pad, t_lst *lst)
 	{
 		while (tmp)
 		{
+			printf("name = %s\n", tmp->name);
 			tmp->link = put_s_before(tmp->link, pad->len_lnk);
 			//tmp->user_id = ft_strnjoin(tmp->user_id, " ",
 			//		(pad->len_usr - ft_strlen(tmp->user_id)));
