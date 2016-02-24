@@ -19,7 +19,7 @@
 # include <dirent.h> // opendir, readdir, closedir
 # include <sys/stat.h> // stat, lstat
 # include <pwd.h> // getpwuid
-# include <uuid/uuid.h> // getpwuid, getgrgid
+//# include <uuid/uuid.h> // getpwuid, getgrgid
 # include <grp.h> // getgrgid
 # include <sys/xattr.h> // listxattr, getxattr
 # include <time.h> // time, ctime
@@ -51,8 +51,8 @@ typedef struct		s_lst
 	char			*name;
 	char			*chem;
 	char			perm[11];
-	char			*user_id;
-	char			*group_id;
+	//char			*user_id;
+	//char			*group_id;
 	char			*date;
 	int				date_id;
 	int				blok;

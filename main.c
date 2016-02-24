@@ -99,15 +99,15 @@ t_lst	*get_info(t_lst *head, char *file, char *path)
 	t_lst			*new;
 	t_lst			*ptr;
 
-	new = (t_lst *)malloc(sizeof(t_lst));
+	new = (t_lst *)malloc(sizeof(t_lst)); // protect
 	ptr = head;
 	if (lstat(path, &st) <= 0)
 	{
 		fill_info(st, new, file);
-		if (getpwuid(st.st_uid))
-			new->user_id = ft_strdup(getpwuid(st.st_uid)->pw_name);
-		if (getgrgid(st.st_gid))
-			new->group_id = ft_strdup(getgrgid(st.st_gid)->gr_name);
+		//if (getpwuid(st.st_uid))
+		//	new->user_id = ft_strdup(getpwuid(st.st_uid)->pw_name);
+		//if (getgrgid(st.st_gid))
+		//	new->group_id = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	}
 	if (head == NULL)
 		return (new);
@@ -212,6 +212,60 @@ void	manage_opt(t_lst *lst, t_opt *opt, char *path)
 	}
 }
 
+void	free_lst(t_lst *lst)
+{
+	int cnt; // test
+	t_lst *tmp;
+
+	cnt = 0;
+	while (lst)
+	{
+		cnt++;
+		tmp = lst->next;
+		if (lst->name)
+		{
+			printf("free : %s\n", lst->name);
+			free(lst->name);
+		}
+		if (lst->date)
+		{
+		//	printf("free : %s\n", lst->date);
+			free(lst->date);
+		}
+		if (lst->link)
+		{
+		//	printf("free : %s\n", lst->link);
+			free(lst->link);
+		}
+		if (lst->size)
+		{
+			printf("free : %s\n", lst->size);
+			free(lst->size);
+		}
+		if (lst->maj)
+		{
+		//	printf("free : %s\n", lst->maj);
+			free(lst->maj);
+		}
+		if (lst->min)
+		{
+		//	printf("free : %s\n", lst->min);
+			free(lst->min);
+		}
+		if (lst->majmin)
+		{
+		//	printf("free : %s\n", lst->majmin);
+			free(lst->majmin);
+		}
+		//	free(lst);
+		lst = tmp;
+	}
+	printf("nb nodes deleted : %d\n", cnt);
+	//free(lst);
+	//lst = NULL;
+}
+
+
 void	get_param(char *path, t_opt *opt)
 {
 	DIR 			*dir;
@@ -244,6 +298,7 @@ void	get_param(char *path, t_opt *opt)
 	if (opt && opt->l)
 		padding(lst);
 	manage_opt(lst, opt, path);
+	free_lst(lst);
 }
 
 int		main(int ac, char **av)

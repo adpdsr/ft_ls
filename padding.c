@@ -14,8 +14,8 @@
 
 static void	init_pad(t_pad *pad, t_lst *lst)
 {
-	pad->len_usr = ft_strlen(lst->user_id);
-	pad->len_grp = ft_strlen(lst->group_id);
+	//pad->len_usr = ft_strlen(lst->user_id);
+	//pad->len_grp = ft_strlen(lst->group_id);
 	pad->len_lnk = ft_strlen(lst->link);
 	pad->len_siz = ft_strlen(lst->size);
 	pad->len_maj = ft_strlen(lst->maj);
@@ -61,10 +61,10 @@ static void	apply_padding(t_pad *pad, t_lst *lst)
 		while (tmp)
 		{
 			tmp->link = put_s_before(tmp->link, pad->len_lnk);
-			tmp->user_id = ft_strnjoin(tmp->user_id, " ",
-					(pad->len_usr - ft_strlen(tmp->user_id)));
-			tmp->group_id = ft_strnjoin(tmp->group_id, " ",
-					(pad->len_grp - ft_strlen(tmp->group_id)));
+			//tmp->user_id = ft_strnjoin(tmp->user_id, " ",
+			//		(pad->len_usr - ft_strlen(tmp->user_id)));
+			//tmp->group_id = ft_strnjoin(tmp->group_id, " ",
+			//		(pad->len_grp - ft_strlen(tmp->group_id)));
 			tmp->size = put_s_before(tmp->size, pad->len_siz);
 			tmp->maj = put_s_before(tmp->maj, pad->len_maj);
 			tmp->min = put_s_before(tmp->min, pad->len_min);
@@ -82,13 +82,14 @@ void		padding(t_lst *lst)
 
 	tmp = lst;
 	init_pad(&pad, lst);
-	pad.len_usr = ft_strlen(lst->user_id);
+	//pad.len_usr = ft_strlen(lst->user_id);
+	//pad.len_grp = ...
 	while (tmp->next)
 	{
-		if (pad.len_usr < ft_strlen(tmp->next->user_id))
-			pad.len_usr = ft_strlen(tmp->next->user_id);
-		if (pad.len_grp < ft_strlen(tmp->next->group_id))
-			pad.len_grp = ft_strlen(tmp->next->group_id);
+		//if (pad.len_usr < ft_strlen(tmp->next->user_id))
+		//	pad.len_usr = ft_strlen(tmp->next->user_id);
+		//if (pad.len_grp < ft_strlen(tmp->next->group_id))
+		//	pad.len_grp = ft_strlen(tmp->next->group_id);
 		if (pad.len_lnk < ft_strlen(tmp->next->link))
 			pad.len_lnk = ft_strlen(tmp->next->link);
 		if (pad.len_siz < ft_strlen(tmp->next->size))

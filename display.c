@@ -16,9 +16,9 @@ static void	put_long(t_lst *lst)
 {
 	ft_putstr_s(lst->perm);
 	ft_putstr_s(lst->link);
-	ft_putstr_s(lst->user_id);
+	//ft_putstr_s(lst->user_id);
 	ft_putchar(' ');
-	ft_putstr_s(lst->group_id);
+	//ft_putstr_s(lst->group_id);
 	if (lst->perm[0] != 'c' && lst->perm[0] != 'b') // KO, verifier dans /dev pour stdin, stdout, etc...
 	{
 		ft_putchar(' ');

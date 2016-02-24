@@ -56,11 +56,19 @@ char	*format_size(char *s)
 	if (size >= 4)
 	{
 		formated = add_dot(s, size);
+		free(s);
+		s = NULL;
 		ft_strcat(formated, end);
+		free(end);
+		end = NULL;
 		return (formated);
 	}
 	ft_strcpy(formated, s);
+	free(s);
+	s = NULL;
 	ft_strcat(formated, end);
+	free(end);
+	end = NULL;
 	ft_strjoin(formated, "\0");
 	return (formated);
 }
