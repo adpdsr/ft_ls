@@ -6,11 +6,25 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 11:54:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/11 16:03:08 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/07 10:46:37 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+char	*add_slash(char *path)
+{
+	if (path[ft_strlen(path) - 1] != '/')
+		path = ft_strjoin(path, "/");
+	return (path);
+}
+
+char	*remove_slash(char *path)
+{
+	if (path[ft_strlen(path) - 1] == '/')
+		path[ft_strlen(path) - 1] = '\0';
+	return (path);
+}
 
 void	ft_putstr_s(char *s)
 {

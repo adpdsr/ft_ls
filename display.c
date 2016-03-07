@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/22 14:50:12 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/02 15:34:19 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,23 @@
 
 static void	put_long(t_lst *lst)
 {
-	ft_putchar('|');
 	ft_putstr_s(lst->perm);
-	ft_putchar('|');
 	ft_putstr_s(lst->link);
-	ft_putchar('|');
-	//ft_putstr_s(lst->user_id);
-	ft_putchar('|');
+	ft_putstr_s(lst->user_id);
 	ft_putchar(' ');
-	ft_putchar('|');
-	//ft_putstr_s(lst->group_id);
-	if (lst->perm[0] != 'c' && lst->perm[0] != 'b') // KO, verifier dans /dev pour stdin, stdout, etc...
+	ft_putstr_s(lst->group_id);
+	if (lst->perm[0] != 'c' && lst->perm[0] != 'b')
 	{
-		ft_putchar('|');
 		ft_putchar(' ');
-		ft_putchar('|');
 		ft_putstr_s(lst->size);
-		ft_putchar('|');
 	}
 	else
 		ft_putstr_s(lst->majmin);
-	ft_putchar('|');
 	ft_putstr_s(lst->date);
-	ft_putchar('|');
 	ft_putendl(lst->name);
 }
 
-void	display_lst(t_lst *lst, int hidd)
+void		display_lst(t_lst *lst, int hidd)
 {
 	if (!hidd)
 	{
@@ -61,7 +51,7 @@ void	display_lst(t_lst *lst, int hidd)
 	}
 }
 
-void	display_llst(t_lst *lst, int hidd)
+void		display_llst(t_lst *lst, int hidd)
 {
 	if (!hidd)
 	{
@@ -82,7 +72,7 @@ void	display_llst(t_lst *lst, int hidd)
 	}
 }
 
-void	display_rlst(t_lst *lst, int hidd)
+void		display_rlst(t_lst *lst, int hidd)
 {
 	if (!hidd)
 	{
@@ -90,7 +80,7 @@ void	display_rlst(t_lst *lst, int hidd)
 		{
 			display_rlst(lst->next, hidd);
 			if (ft_strncmp(lst->name, ".", 1))
-				ft_putendl(lst->name);	
+				ft_putendl(lst->name);
 		}
 	}
 	else
@@ -103,7 +93,7 @@ void	display_rlst(t_lst *lst, int hidd)
 	}
 }
 
-void	display_rllst(t_lst *lst, int hidd)
+void		display_rllst(t_lst *lst, int hidd)
 {
 	if (!hidd)
 	{

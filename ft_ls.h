@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/22 15:03:10 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/07 18:25:29 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct		s_lst
 	char			*name;
 	char			*chem;
 	char			perm[11];
-	//char			*user_id;
-	//char			*group_id;
+	char			*user_id;
+	char			*group_id;
 	char			*date;
 	int				date_id;
 	int				blok;
@@ -65,6 +65,13 @@ typedef struct		s_lst
 	struct s_lst 	*next;
 }					t_lst;
 
+void	free_lst(t_lst **lst);
+void	free_tab(char **tab);
+
+int		is_what(char *tab);
+int		count_dir(t_lst **lst);
+void	fill_info(struct stat st, t_lst *new, char *file);
+
 char	*add_slash(char *path);
 char	*remove_slash(char *path);
 
@@ -73,10 +80,13 @@ void	ft_putstr_s(char *s);
 void	put_total(t_lst *lst, int hidd);
 
 char	**create_tab(char **av, t_opt *opt, int ac, int flag);
+char	**sort_tab_time(char **tab, t_opt *opt, int len);
+char	**reverse_tab(char **tab);
+char	**sort_tab_time(char **tab, t_opt *opt, int len);
 
 void	get_param(char *path, t_opt *opt);
 
-void	padding(t_lst *lst);
+void	padding(t_lst **lst, t_pad *pad);
 
 char	*format_size(char *s);
 char	*join_maj_min(dev_t device_id);

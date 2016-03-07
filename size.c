@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 10:20:35 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/22 13:05:31 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/02 17:04:43 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,7 @@ static char	*add_dot(char *s, size_t size)
 
 	toput = size % 3;
 	((toput == 0)) ? toput = 3 : toput;
-	printf("s = %s\n", s);
-	printf("malloc = %zu\n", toput + 6);
-	tmp = ft_strnew(toput + 4);
-	//if (!(tmp = (char *)malloc(sizeof(char) * toput + 5)))
-	//	return (NULL);
-	tmp = ft_strnew(toput + 7);
+	tmp = ft_strnew(toput + 6);
 	ft_strncpy(tmp, s, toput);
 	ft_strcat(tmp, ".");
 	if (s[toput] && s[toput + 1] && s[toput + 2])
@@ -50,7 +45,7 @@ static char	*add_dot(char *s, size_t size)
 	return (tmp);
 }
 
-char	*format_size(char *s)
+char		*format_size(char *s)
 {
 	size_t	size;
 	char	*formated;
@@ -58,12 +53,8 @@ char	*format_size(char *s)
 
 	size = ft_strlen(s);
 	if (size == 1 && (!ft_atoi(s)))
-	{
-		free(s);
-		s = NULL;
 		return (ft_strdup("0 B"));
-	}
-	formated = ft_strnew(size); // ??
+	formated = ft_strnew(size);
 	end = ft_strdup(add_unit(size));
 	if (size >= 4)
 	{
@@ -78,15 +69,11 @@ char	*format_size(char *s)
 	else
 		return (ft_strjoin(s, end));
 	ft_strjoin(formated, s);
-	free(s);
-	s = NULL;
 	ft_strjoin(formated, end);
-	free(end);
-	end = NULL;
 	return (formated);
 }
 
-void	put_total(t_lst *lst, int hidd)
+void		put_total(t_lst *lst, int hidd)
 {
 	int res;
 
@@ -110,4 +97,20 @@ void	put_total(t_lst *lst, int hidd)
 	}
 	ft_putstr("total ");
 	ft_putnbr_endl(res);
+}
+
+int			count_dir(t_lst **lst)
+{
+	int		i;
+	t_lst	*tmp;
+
+	i = 0;
+	tmp = *lst;
+	while (tmp)
+	{
+		if (tmp->is_dir)
+			i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

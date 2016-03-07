@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:08:49 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/17 12:11:51 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/07 17:18:29 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+
+# define BUFF_SIZE 8
 
 typedef struct		s_list
 {
@@ -59,6 +61,7 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
+int					ft_tablen(char **tab);
 char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);
 void				ft_strclr(char *s);
@@ -92,6 +95,11 @@ void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-//void				ft_lstpushback(t_list **blst, void const *content, size_t content_size);
+int					get_next_line(int const fd, char **line);
+char				*ft_strcdup(char *str, char c);
+int				ft_cntc(char *str, char c);
+char				**ft_tabdup(char **tab);
+void				ft_freetab(char **tab);
+void				ft_tabswap(char **s1, char **s2);
 
 #endif

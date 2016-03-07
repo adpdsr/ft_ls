@@ -6,11 +6,18 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/02/22 14:53:24 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/07 11:21:59 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+static void	put_error(char *path)
+{
+	ft_putstr("ft_ls: ");
+	perror(remove_slash(path));
+	exit(1);
+}
 
 static char	*get_file_name(char *path)
 {
@@ -63,14 +70,10 @@ t_lst		*manage_av_file(char *path, t_lst *lst, DIR *dir)
 	struct dirent	*ret;
 
 	formated = format_path(path);
-	if (formated == NULL)
+	if (!formated)
 		return (NULL);
 	if (!(dir = opendir(formated)))
-	{
-		ft_putstr("ft_ls: ");
-		perror(remove_slash(path));
-		exit(1);
-	}
+		put_error(path);
 	else
 	{
 		file_name = get_file_name(path);
