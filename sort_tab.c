@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/07 18:25:27 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 11:01:37 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,7 @@ static void		sort_tab_ascii(char **tab, t_opt *opt, int flag)
 	}
 }
 
-int				is_what(char *tab)
-{
-	DIR			*dir;
-	struct stat st;
-
-	if ((dir = opendir(tab)))
-	{
-		closedir(dir);
-		return (1);
-	}
-	else if (!stat(tab, &st))
-		return (0);
-	else
-		return (-1);
-}
-
-static char 	**reverse_tab2(char **tab, char **cpy, int start, int i)
+static char		**reverse_tab2(char **tab, char **cpy, int start, int i)
 {
 	int end;
 	int ref;
@@ -73,17 +57,17 @@ static char 	**reverse_tab2(char **tab, char **cpy, int start, int i)
 		i++;
 	}
 	cpy[i] = NULL;
-	//free tab
+	ft_freetab(tab);
 	return (cpy);
 }
 
 char			**reverse_tab(char **tab)
 {
-	int i;
-	int ref;
-	int start;
-	int end;
-	char **cpy;
+	int		i;
+	int		ref;
+	int		start;
+	int		end;
+	char	**cpy;
 
 	i = 0;
 	if (!(cpy = (char **)malloc(sizeof(char *) * (ft_tablen(tab) + 1))))
@@ -100,6 +84,27 @@ char			**reverse_tab(char **tab)
 	return (reverse_tab2(tab, cpy, start, i));
 }
 
+static void		cpy_in_tab(int i, int ac, char **tab, char **av)
+{
+	int ref;
+	int j;
+
+	j = 0;
+	ref = i;
+	while (++i < ac)
+		if (is_what(av[i]) == -1)
+			tab[j++] = ft_strdup(av[i]);
+	i = ref;
+	while (++i < ac)
+		if (is_what(av[i]) == 0)
+			tab[j++] = ft_strdup(av[i]);
+	i = ref;
+	while (++i < ac)
+		if (is_what(av[i]) == 1)
+			tab[j++] = ft_strdup(av[i]);
+	tab[j] = NULL;
+}
+
 char			**create_tab(char **av, t_opt *opt, int ac, int flag)
 {
 	int		i;
@@ -112,21 +117,10 @@ char			**create_tab(char **av, t_opt *opt, int ac, int flag)
 		sort_tab_ascii(av, opt, flag);
 	if (!(tab = (char **)malloc(sizeof(char *) * (ac - flag + 1))))
 		return (NULL);
-	while (++i < ac)
-		if (is_what(av[i]) == -1)
-			tab[j++] = ft_strdup(av[i]);
-	i = flag - 1;
-	while (++i < ac)
-		if (is_what(av[i]) == 0)
-			tab[j++] = ft_strdup(av[i]);
-	i = flag - 1;
-	while (++i < ac)
-		if (is_what(av[i]) == 1)
-			tab[j++] = ft_strdup(av[i]);
-	tab[j] = NULL;
-	if (opt && opt->t)
+	cpy_in_tab(i, ac, tab, av);
+	if (opt && opt->t & !opt->r)
 		tab = sort_tab_time(tab, opt, ft_tablen(tab));
-	if (opt && opt->t && opt->r)
+	else if (opt && opt->t && opt->r)
 		tab = reverse_tab(tab);
 	return (tab);
 }

@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 11:54:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/07 10:46:37 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 13:52:11 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,43 @@ void	ft_putnbr_endl(int n)
 		ft_putchar(n % 10 + '0');
 	}
 	write(1, "\n", 1);
+}
+
+int		is_what(char *tab)
+{
+	DIR			*dir;
+	struct stat	st;
+
+	if ((dir = opendir(tab)))
+	{
+		closedir(dir);
+		return (1);
+	}
+	else if (!stat(tab, &st))
+		return (0);
+	else
+		return (-1);
+}
+
+char	*get_path(char *path)
+{
+	int		i;
+	int		j;
+	int 	end;
+	char	*new;
+
+	j = 0;
+	path = remove_slash(path);
+	i = ft_strlen(path);
+	end = i;
+	while (i > 0 && path[i - 1] != '/')
+		i--;
+	new = ft_strnew(end - i + 1);
+	while (path[i])
+	{
+		new[j] = path[i];
+		i++;
+		j++;
+	}
+	return (new);
 }

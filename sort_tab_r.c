@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/07 17:57:20 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 11:10:02 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,23 @@
 
 static char		**sort_time(int start, int end, char **name, int *time)
 {
-	int i;
-	int itmp;
-	char *stmp;
+	int		i;
+	int		itmp;
+	char	*stmp;
 
 	itmp = 0;
-	i = start;
-	while (start < end)
+	i = start - 1;
+	while (start < end && time[start + 1])
 	{
-		if (time[start + 1] != 0)
+		if (time[start] < time[start + 1])
 		{
-			if (time[start] < time[start + 1])
-			{
-				itmp = time[start];
-				time[start] = time[start + 1];
-				time[start + 1] = itmp;
-				stmp = name[start];
-				name[start] = ft_strdup(name[start + 1]);
-				name[start + 1] = ft_strdup(stmp);
-				start = i;
-			}
+			itmp = time[start];
+			time[start] = time[start + 1];
+			time[start + 1] = itmp;
+			stmp = name[start];
+			name[start] = ft_strdup(name[start + 1]);
+			name[start + 1] = ft_strdup(stmp);
+			start = i;
 		}
 		start++;
 	}
@@ -57,10 +54,10 @@ static int		while_is_error(char **tab, char **cpy_name, int *cpy_date)
 
 static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
 {
-	int end;
-	t_opt *opt;
-	int start;
-	struct stat st;
+	int			end;
+	t_opt		*opt;
+	int			start;
+	struct stat	st;
 
 	start = i;
 	if (is_what(tab[i]) == 0)
@@ -79,10 +76,10 @@ static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
 
 static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date, int i)
 {
-	struct dirent *ret;
-	struct stat st;
-	int start;
-	DIR *dir;
+	struct dirent	*ret;
+	struct stat		st;
+	int				start;
+	DIR				*dir;
 
 	start = i;
 	if (is_what(tab[i]) == 1)
@@ -101,11 +98,11 @@ static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date, int i)
 	return (i);
 }
 
-char		**sort_tab_time(char **tab, t_opt *opt, int len)
+char			**sort_tab_time(char **tab, t_opt *opt, int len)
 {
-	int i;
-	char **cpy_name;
-	int	*cpy_date;
+	int		i;
+	char	**cpy_name;
+	int		*cpy_date;
 
 	i = 0;
 	if (!(cpy_name = (char **)malloc(sizeof(char *) * (len + 1))))
