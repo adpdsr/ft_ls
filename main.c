@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 14:33:12 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 14:37:41 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void		check_void_av(int ac, char **av, int flag)
 	}
 }
 
-static void		put_head(char *path, int ac, int flag, int flag)
+static void		put_head(char *path, int ac, int flag, int put_space)
 {
 	if (ac - flag > 1 && is_what(path) == 1)
 	{

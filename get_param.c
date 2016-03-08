@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/28 09:49:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 14:33:14 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 14:38:10 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		error(char *path)
 	return (1);
 }
 
-static int	error_r(t_lst *lst, char *path)
+static int		error_r(t_lst *lst, char *path)
 {
 	ft_putstr("ft_ls: ");
 	path = get_path(path);
@@ -46,7 +46,7 @@ static void		suite(t_lst *lst, char *path, t_pad *pad, t_opt *opt)
 	if (!opt->R && !lst->next)
 		free_lst(&lst);
 	else if (!opt->R && lst)
-		free_lst(&lst);	
+		free_lst(&lst);
 }
 
 void			get_param(char *path, t_opt *opt)
