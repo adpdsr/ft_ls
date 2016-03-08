@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:23:08 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:23:10 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 18:34:36 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,18 +99,32 @@ void		put_total(t_lst *lst, int hidd)
 	ft_putnbr_endl(res);
 }
 
-int			count_dir(t_lst **lst)
+int			count_dir(t_lst **lst, t_opt *opt)
 {
 	int		i;
 	t_lst	*tmp;
 
 	i = 0;
 	tmp = *lst;
-	while (tmp)
+	if (opt->a == 1)
 	{
-		if (tmp->is_dir)
-			i++;
-		tmp = tmp->next;
+		while (tmp)
+		{
+			if (tmp->is_dir)
+				i++;
+			tmp = tmp->next;
+		}
+		return (i);
 	}
-	return (i);
+	else if (opt->a == 0)
+	{
+		while (tmp)
+		{
+			if (tmp->is_dir && ft_strncmp(&tmp->name[0], ".", 1))
+				i++;
+			tmp = tmp->next;
+		}
+		return (i);
+	}
+	return (0);
 }

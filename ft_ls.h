@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 17:43:05 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 18:28:02 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void				free_lst(t_lst **lst);
 void				free_tab(char **tab);
 
 int					is_what(char *tab);
-int					count_dir(t_lst **lst);
+int					count_dir(t_lst **lst, t_opt *opt);
 void				fill_info(struct stat st, t_lst *new, char *file);
 
 char				*add_slash(char *path);
