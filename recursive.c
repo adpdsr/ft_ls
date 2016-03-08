@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 11:16:26 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 18:19:11 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 18:22:33 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 	int				nb_dir;
 
 	i = -1;
-	nb_dir = count_dir(&lst);
+	nb_dir = count_dir(&lst); // add opt in proto, make != malloc if a is on or off
 	if (!(dirs = (char **)malloc(sizeof(char *) * (nb_dir + 1))))
 		exit(1);
 	cpy_dir(dirs, lst, opt);
