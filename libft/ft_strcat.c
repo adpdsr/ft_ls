@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/24 14:34:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2015/12/07 11:05:10 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:07:39 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strcat(char *s1, const char *s2)
 {
-	int 	i;
-	int 	j;
+	int		i;
+	int		j;
 	char	*tmp;
 
 	j = 0;

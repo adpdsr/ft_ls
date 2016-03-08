@@ -6,16 +6,18 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 11:16:26 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:23:01 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 18:19:11 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void	put_path(char **dirs, char *path, t_opt *opt, int i)
+static void	put_path(char **dirs, char *path, int i)
 {
 	ft_putchar('\n');
-	ft_putstr(ft_strjoin(path, dirs[i]));
+	ft_putendl("test4");
+	ft_putstr(ft_strjoin(path, dirs[i])); // segf
+	ft_putendl("test5");
 	ft_putstr(":\n");
 }
 
@@ -55,7 +57,7 @@ static void	r_on(char **dirs, char *path, int nb_dir, t_opt *opt)
 		{
 			if (dirs[j] != NULL)
 			{
-				put_path(dirs, path, opt, j);
+				put_path(dirs, path, j);
 				get_param(ft_strjoin(path, add_slash(dirs[j])), opt);
 			}
 			j--;
@@ -67,7 +69,6 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 {
 	char			**dirs;
 	int				i;
-	int				j;
 	int				nb_dir;
 
 	i = -1;
@@ -80,7 +81,7 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 		{
 			if (dirs[i])
 			{
-				put_path(dirs, path, opt, i);
+				put_path(dirs, path, i);
 				get_param(ft_strjoin(path, add_slash(dirs[i])), opt);
 			}
 			else
@@ -89,5 +90,5 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 	else if (opt->r == 1)
 		r_on(dirs, path, nb_dir, opt);
 	free_tab(dirs);
-	opt->R = 1;
+	opt->big_r = 1;
 }

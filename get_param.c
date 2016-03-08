@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:21:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:25 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:15:07 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		error(char *path)
 	return (1);
 }
 
-static int		error_r(t_lst *lst, char *path)
+static int		error_r(char *path)
 {
 	ft_putstr("ft_ls: ");
 	path = get_path(path);
@@ -43,9 +43,9 @@ static void		suite(t_lst *lst, char *path, t_pad *pad, t_opt *opt)
 {
 	padding(&lst, pad);
 	manage_opt(lst, opt, path);
-	if (!opt->R && !lst->next)
+	if (!opt->big_r && !lst->next)
 		free_lst(&lst);
-	else if (!opt->R && lst)
+	else if (!opt->big_r && lst)
 		free_lst(&lst);
 }
 
@@ -66,7 +66,7 @@ void			get_param(char *path, t_opt *opt)
 		if (!lst && error(path))
 			return ;
 		else if (lst->perm[0] == 'd' &&
-				lst->perm[1] == '-' && error_r(lst, path))
+				lst->perm[1] == '-' && error_r(path))
 			return ;
 		is_file = 1;
 	}

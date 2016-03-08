@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:22:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:40 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:15:28 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		manage_opt_bis(t_lst *lst, t_opt *opt, char *path, int hidd)
 		display_lst(lst, hidd);
 	else if (lst && (!opt->a) && (!opt->r))
 		display_lst(lst, hidd);
-	if (lst && opt->R)
+	if (lst && opt->big_r)
 		recursive(path, lst, opt);
 }
 
@@ -34,7 +34,7 @@ void			manage_opt(t_lst *lst, t_opt *opt, char *path)
 
 	hidd = 0;
 	lst = lst_sort_ascii(lst);
-	if (!opt || (opt->l == 0 && opt->R == 0 && opt->a == 0
+	if (!opt || (opt->l == 0 && opt->big_r == 0 && opt->a == 0
 				&& opt->r == 0 && opt->t == 0))
 		display_lst(lst, hidd);
 	else

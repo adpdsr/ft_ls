@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:23:26 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:23:28 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:04:15 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int		while_is_error(char **tab, char **cpy_name, int *cpy_date)
 static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
 {
 	int			end;
-	t_opt		*opt;
 	int			start;
 	struct stat	st;
 

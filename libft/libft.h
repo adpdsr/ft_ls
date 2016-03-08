@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:08:49 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/07 17:18:29 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:08:24 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					get_next_line(int const fd, char **line);
 char				*ft_strcdup(char *str, char c);
-int				ft_cntc(char *str, char c);
+int					ft_cntc(char *str, char c);
 char				**ft_tabdup(char **tab);
 void				ft_freetab(char **tab);
 void				ft_tabswap(char **s1, char **s2);

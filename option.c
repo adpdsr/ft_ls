@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:22:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:49 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:16:11 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void		init_opt(t_opt *opt)
 {
 	opt->l = 0;
-	opt->R = 0;
 	opt->a = 0;
 	opt->r = 0;
 	opt->t = 0;
+	opt->big_r = 0;
 }
 
 static void	err_opt(char *err)
@@ -44,7 +44,7 @@ int			get_opt(char *opts, t_opt *opt)
 		if (opts[i] == 'l')
 			opt->l = 1;
 		if (opts[i] == 'R')
-			opt->R = 1;
+			opt->big_r = 1;
 		if (opts[i] == 'a')
 			opt->a = 1;
 		if (opts[i] == 'r')

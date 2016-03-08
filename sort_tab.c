@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:23:18 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 17:02:05 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static char		**reverse_tab2(char **tab, char **cpy, int start, int i)
 char			**reverse_tab(char **tab)
 {
 	int		i;
-	int		ref;
 	int		start;
 	int		end;
 	char	**cpy;
