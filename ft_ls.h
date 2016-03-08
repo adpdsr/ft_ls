@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 13:13:57 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/08 15:48:59 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <dirent.h> // opendir, readdir, closedir
 # include <sys/stat.h> // stat, lstat
 # include <pwd.h> // getpwuid
-//# include <uuid/uuid.h> // getpwuid, getgrgid
+# include <uuid/uuid.h> // getpwuid, getgrgid
 # include <grp.h> // getgrgid
 # include <sys/xattr.h> // listxattr, getxattr
 # include <time.h> // time, ctime
@@ -56,7 +56,7 @@ typedef struct		s_lst
 	char			*date;
 	int				date_id;
 	int				blok;
-	int				is_dir; // bool
+	int				is_dir;
 	char			*link;
 	char			*size;
 	char			*maj;
@@ -80,9 +80,8 @@ void	ft_putstr_s(char *s);
 void	put_total(t_lst *lst, int hidd);
 
 char	**create_tab(char **av, t_opt *opt, int ac, int flag);
-char	**sort_tab_time(char **tab, t_opt *opt, int len);
 char	**reverse_tab(char **tab);
-char	**sort_tab_time(char **tab, t_opt *opt, int len);
+char	**sort_tab_time(char **tab, int len);
 
 void	get_param(char *path, t_opt *opt);
 

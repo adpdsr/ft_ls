@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   basic_functions.c                                  :+:      :+:    :+:   */
+/*   tool.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/02 11:54:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 13:52:11 by adu-pelo         ###   ########.fr       */
+/*   Created: 2016/03/08 16:21:14 by adu-pelo          #+#    #+#             */
+/*   Updated: 2016/03/08 16:38:27 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,27 +71,4 @@ int		is_what(char *tab)
 		return (0);
 	else
 		return (-1);
-}
-
-char	*get_path(char *path)
-{
-	int		i;
-	int		j;
-	int 	end;
-	char	*new;
-
-	j = 0;
-	path = remove_slash(path);
-	i = ft_strlen(path);
-	end = i;
-	while (i > 0 && path[i - 1] != '/')
-		i--;
-	new = ft_strnew(end - i + 1);
-	while (path[i])
-	{
-		new[j] = path[i];
-		i++;
-		j++;
-	}
-	return (new);
 }

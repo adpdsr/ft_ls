@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_tab.c                                         :+:      :+:    :+:   */
+/*   sort_tab_r.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 11:10:02 by adu-pelo         ###   ########.fr       */
+/*   Created: 2016/03/08 16:23:26 by adu-pelo          #+#    #+#             */
+/*   Updated: 2016/03/08 16:23:28 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date, int i)
 	return (i);
 }
 
-char			**sort_tab_time(char **tab, t_opt *opt, int len)
+char			**sort_tab_time(char **tab, int len)
 {
 	int		i;
 	char	**cpy_name;
