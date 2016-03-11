@@ -6,19 +6,30 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/11 10:29:07 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/11 12:05:26 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/11 13:24:26 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static char		**sort_time(int start, int end, char **name, int *time[])
+void			swap_string(int *time[], char **name, int start, int j)	
 {
-	int		i;
 	int		itmp;
 	char	*stmp;
 
 	itmp = 0;
+	itmp = time[j][start];
+	time[j][start] = time[j][start + 1];
+	time[j][start + 1] = itmp;
+	stmp = name[start];
+	name[start] = ft_strdup(name[start + 1]);
+	name[start + 1] = ft_strdup(stmp);
+}
+
+static char		**sort_time(int start, int end, char **name, int *time[])
+{
+	int		i;
+
 	i = start - 1;
 	if (end - start > 1)
 	{
@@ -26,24 +37,14 @@ static char		**sort_time(int start, int end, char **name, int *time[])
 		{
 			if (time[0][start] < time[0][start + 1])
 			{
-				itmp = time[0][start];
-				time[0][start] = time[0][start + 1];
-				time[0][start + 1] = itmp;
-				stmp = name[start];
-				name[start] = ft_strdup(name[start + 1]);
-				name[start + 1] = ft_strdup(stmp);
+				swap_string(time, name, start, 0);
 				start = i;
 			}
 			else if (time[0][start] == time[0][start + 1])
 			{
 				if (time[1][start] < time[1][start + 1])
 				{
-					itmp = time[1][start];
-					time[1][start] = time[1][start + 1];
-					time[1][start + 1] = itmp;
-					stmp = name[start];
-					name[start] = ft_strdup(name[start + 1]);
-					name[start + 1] = ft_strdup(stmp);
+					swap_string(time, name, start, 1);
 					start = i;
 				}
 			}
@@ -91,7 +92,7 @@ static int		while_is_file(char **tab, char **cpy_name, int *cpy_date[], int i)
 	return (i);
 }
 
-static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date[], int i)
+static int		while_is_dir(char **tab, char **name, int *date[], int i)
 {
 	struct dirent	*ret;
 	struct stat		st;
@@ -105,14 +106,14 @@ static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date[], int i)
 			dir = opendir(tab[i]);
 			ret = readdir(dir);
 			stat(tab[i], &st);
-			cpy_name[i] = ft_strdup(tab[i]);
-			cpy_date[0][i] = (int)st.st_mtime;
-			cpy_date[1][i] = (int)st.N_TIME;
+			name[i] = ft_strdup(tab[i]);
+			date[0][i] = (int)st.st_mtime;
+			date[1][i] = (int)st.N_TIME;
 			closedir(dir);
 			i++;
 		}
-	cpy_name[i] = NULL;
-	cpy_name = sort_time(start, i, cpy_name, cpy_date);
+	name[i] = NULL;
+	name = sort_time(start, i, name, date);
 	return (i);
 }
 
