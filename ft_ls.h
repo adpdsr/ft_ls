@@ -6,15 +6,15 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 18:28:02 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/11 12:17:40 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
+# define N_TIME st_mtimespec.tv_nsec
 # include "./libft/libft.h"
-
 # include <unistd.h>
 # include <dirent.h>
 # include <sys/stat.h>
@@ -49,12 +49,12 @@ typedef struct		s_opt
 typedef struct		s_lst
 {
 	char			*name;
-	char			*chem;
 	char			perm[11];
 	char			*user_id;
 	char			*group_id;
 	char			*date;
 	int				date_id;
+	int				ntime;
 	int				blok;
 	int				is_dir;
 	char			*link;
@@ -62,15 +62,17 @@ typedef struct		s_lst
 	char			*maj;
 	char			*min;
 	char			*majmin;
+	char			*path;
 	struct s_lst	*next;
 }					t_lst;
 
+void				put_link(char *path);
 void				free_lst(t_lst **lst);
-void				free_tab(char **tab);
 
 int					is_what(char *tab);
-int					count_dir(t_lst **lst, t_opt *opt);
-void				fill_info(struct stat st, t_lst *new, char *file);
+int					count_dir(t_lst *lst, t_opt *opt);
+void				fill_info(struct stat st, t_lst *new,
+					char *file, char *path);
 
 char				*add_slash(char *path);
 char				*remove_slash(char *path);
@@ -108,5 +110,6 @@ void				recursive(char *path, t_lst *lst, t_opt *opt);
 void				manage_opt(t_lst *lst, t_opt *opt, char *path);
 
 char				*get_path(char *path);
+char				*get_pathname(t_lst *lst, char *path);
 
 #endif

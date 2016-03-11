@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/08 16:23:26 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 17:04:15 by adu-pelo         ###   ########.fr       */
+/*   Created: 2016/03/11 10:29:07 by adu-pelo          #+#    #+#             */
+/*   Updated: 2016/03/11 12:05:26 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static char		**sort_time(int start, int end, char **name, int *time)
+static char		**sort_time(int start, int end, char **name, int *time[])
 {
 	int		i;
 	int		itmp;
@@ -20,39 +20,56 @@ static char		**sort_time(int start, int end, char **name, int *time)
 
 	itmp = 0;
 	i = start - 1;
-	while (start < end && time[start + 1])
+	if (end - start > 1)
 	{
-		if (time[start] < time[start + 1])
+		while (start < end - 1 && time[0][start + 1])
 		{
-			itmp = time[start];
-			time[start] = time[start + 1];
-			time[start + 1] = itmp;
-			stmp = name[start];
-			name[start] = ft_strdup(name[start + 1]);
-			name[start + 1] = ft_strdup(stmp);
-			start = i;
+			if (time[0][start] < time[0][start + 1])
+			{
+				itmp = time[0][start];
+				time[0][start] = time[0][start + 1];
+				time[0][start + 1] = itmp;
+				stmp = name[start];
+				name[start] = ft_strdup(name[start + 1]);
+				name[start + 1] = ft_strdup(stmp);
+				start = i;
+			}
+			else if (time[0][start] == time[0][start + 1])
+			{
+				if (time[1][start] < time[1][start + 1])
+				{
+					itmp = time[1][start];
+					time[1][start] = time[1][start + 1];
+					time[1][start + 1] = itmp;
+					stmp = name[start];
+					name[start] = ft_strdup(name[start + 1]);
+					name[start + 1] = ft_strdup(stmp);
+					start = i;
+				}
+			}
+			start++;
 		}
-		start++;
 	}
 	return (name);
 }
 
-static int		while_is_error(char **tab, char **cpy_name, int *cpy_date)
+static int		while_is_error(char **tab, char **cpy_name, int *cpy_date[])
 {
 	int i;
 
 	i = 0;
 	if (is_what(tab[i]) == -1)
-		while (is_what(tab[i]) == -1)
+		while (tab[i] && is_what(tab[i]) == -1)
 		{
 			cpy_name[i] = ft_strdup(tab[i]);
-			cpy_date[i] = 0;
+			cpy_date[0][i] = 0;
+			cpy_date[1][i] = 0;
 			i++;
 		}
 	return (i);
 }
 
-static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
+static int		while_is_file(char **tab, char **cpy_name, int *cpy_date[], int i)
 {
 	int			end;
 	int			start;
@@ -64,7 +81,8 @@ static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
 		{
 			stat(tab[i], &st);
 			cpy_name[i] = ft_strdup(tab[i]);
-			cpy_date[i] = (int)st.st_mtime;
+			cpy_date[0][i] = (int)st.st_mtime;
+			cpy_date[1][i] = (int)st.N_TIME;
 			i++;
 		}
 	end = i;
@@ -73,7 +91,7 @@ static int		while_is_file(char **tab, char **cpy_name, int *cpy_date, int i)
 	return (i);
 }
 
-static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date, int i)
+static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date[], int i)
 {
 	struct dirent	*ret;
 	struct stat		st;
@@ -88,7 +106,8 @@ static int		while_is_dir(char **tab, char **cpy_name, int *cpy_date, int i)
 			ret = readdir(dir);
 			stat(tab[i], &st);
 			cpy_name[i] = ft_strdup(tab[i]);
-			cpy_date[i] = (int)st.st_mtime;
+			cpy_date[0][i] = (int)st.st_mtime;
+			cpy_date[1][i] = (int)st.N_TIME;
 			closedir(dir);
 			i++;
 		}
@@ -101,13 +120,13 @@ char			**sort_tab_time(char **tab, int len)
 {
 	int		i;
 	char	**cpy_name;
-	int		*cpy_date;
+	int		*cpy_date[2];
 
 	i = 0;
 	if (!(cpy_name = (char **)malloc(sizeof(char *) * (len + 1))))
 		return (NULL);
-	if (!(cpy_date = (int *)malloc(sizeof(int) * (len + 1))))
-		return (NULL);
+	cpy_date[0] = (int *)malloc(sizeof(int) * (len + 1));
+	cpy_date[1] = (int *)malloc(sizeof(int) * (len + 1));
 	i = while_is_error(tab, cpy_name, cpy_date);
 	i = while_is_file(tab, cpy_name, cpy_date, i);
 	i = while_is_dir(tab, cpy_name, cpy_date, i);

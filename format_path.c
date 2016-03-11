@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 11:35:54 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:09 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:16:44 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	put_error(char *path)
 {
-	ft_putstr("ft_ls: ");
+	ft_putstr_fd("ft_ls: ", 2);
 	perror(remove_slash(path));
 	exit(1);
 }
@@ -41,26 +41,25 @@ static char	*format_path(char *path)
 	int		i;
 	char	*tmp;
 
-	i = ft_strlen(path) - 1;
-	if (path[i] == '/')
-		return (NULL);
-	else
+	if (path)
 	{
-		tmp = ft_strdup(path);
-		while (tmp[i] != '/' && i > 0)
-			i--;
-		if (i == 0)
-		{
-			tmp = ft_strdup("./");
-			return (tmp);
-		}
+		i = ft_strlen(path) - 1;
+		if (path[i] == '/')
+			return (NULL);
 		else
 		{
-			tmp = add_slash(ft_strndup(path, i));
+			tmp = ft_strdup(path);
+			while (tmp[i] != '/' && i > 0)
+				i--;
+			if (i == 0)
+				tmp = ft_strdup("./");
+			else
+				tmp = add_slash(ft_strndup(path, i));
 			return (tmp);
 		}
 	}
-	return (NULL);
+	else
+		return (NULL);
 }
 
 t_lst		*manage_av_file(char *path, t_lst *lst, DIR *dir)

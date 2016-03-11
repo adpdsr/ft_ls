@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:23:08 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 18:34:36 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:56:59 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ char		*format_size(char *s)
 	if (size >= 4)
 	{
 		formated = add_dot(s, size);
-		free(s);
-		s = NULL;
+		ft_strdel(&s);
 		ft_strcat(formated, end);
-		free(end);
-		end = NULL;
+		ft_strdel(&end);
 		return (formated);
 	}
 	else
@@ -99,30 +97,28 @@ void		put_total(t_lst *lst, int hidd)
 	ft_putnbr_endl(res);
 }
 
-int			count_dir(t_lst **lst, t_opt *opt)
+int			count_dir(t_lst *lst, t_opt *opt)
 {
 	int		i;
-	t_lst	*tmp;
 
-	i = 0;
-	tmp = *lst;
-	if (opt->a == 1)
+	i = 1;
+	if (opt->a)
 	{
-		while (tmp)
+		while (lst)
 		{
-			if (tmp->is_dir)
+			if (lst->is_dir)
 				i++;
-			tmp = tmp->next;
+			lst = lst->next;
 		}
 		return (i);
 	}
-	else if (opt->a == 0)
+	else if (!opt->a)
 	{
-		while (tmp)
+		while (lst)
 		{
-			if (tmp->is_dir && ft_strncmp(&tmp->name[0], ".", 1))
+			if (lst->is_dir && ft_strncmp(&lst->name[0], ".", 1))
 				i++;
-			tmp = tmp->next;
+			lst = lst->next;
 		}
 		return (i);
 	}

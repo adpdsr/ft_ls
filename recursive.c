@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 11:16:26 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 18:34:39 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:46:38 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 static void	put_path(char **dirs, char *path, int i)
 {
 	ft_putchar('\n');
-	ft_putendl("test4");
-	ft_putstr(ft_strjoin(path, dirs[i])); // segf
-	ft_putendl("test5");
+	ft_putstr(ft_strjoin(path, dirs[i]));
 	ft_putstr(":\n");
 }
 
@@ -51,17 +49,14 @@ static void	r_on(char **dirs, char *path, int nb_dir, t_opt *opt)
 	int j;
 
 	j = nb_dir - 1;
-	if (j > -1)
+	while (j > -1)
 	{
-		while (j > -1)
+		if (dirs[j] != NULL)
 		{
-			if (dirs[j] != NULL)
-			{
-				put_path(dirs, path, j);
-				get_param(ft_strjoin(path, add_slash(dirs[j])), opt);
-			}
-			j--;
+			put_path(dirs, path, j);
+			get_param(ft_strjoin(path, add_slash(dirs[j])), opt);
 		}
+		j--;
 	}
 }
 
@@ -72,7 +67,7 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 	int				nb_dir;
 
 	i = -1;
-	nb_dir = count_dir(&lst, opt); // add opt in proto, make != malloc if a is on or off
+	nb_dir = count_dir(lst, opt);
 	if (!(dirs = (char **)malloc(sizeof(char *) * (nb_dir + 1))))
 		exit(1);
 	cpy_dir(dirs, lst, opt);
@@ -89,6 +84,6 @@ void		recursive(char *path, t_lst *lst, t_opt *opt)
 		}
 	else if (opt->r == 1)
 		r_on(dirs, path, nb_dir, opt);
-	free_tab(dirs);
+	ft_freetab(dirs);
 	opt->big_r = 1;
 }

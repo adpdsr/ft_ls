@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 13:03:15 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:23:14 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/09 13:33:57 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,25 @@ t_lst			*lst_sort_time(t_lst *lst)
 	if (lst == NULL)
 		return (NULL);
 	if (lst->next != NULL && (lst->date_id < lst->next->date_id))
+	{
 		lst = lst_swap(lst, lst->next);
+	}
+	else if (lst->next && lst->date_id == lst->next->date_id)
+		if (lst->next && (lst->ntime < lst->next->ntime))
+			lst = lst_swap(lst, lst->next);
 	lst->next = lst_sort_time(lst->next);
 	if (lst->next != NULL && (lst->date_id < lst->next->date_id))
 	{
 		lst = lst_swap(lst, lst->next);
 		lst->next = lst_sort_time(lst->next);
+	}
+	else if (lst->next && lst->date_id == lst->next->date_id)
+	{
+		if (lst->next && (lst->ntime < lst->next->ntime))
+		{
+			lst = lst_swap(lst, lst->next);
+			lst->next = lst_sort_time(lst->next);
+		}
 	}
 	return (lst);
 }

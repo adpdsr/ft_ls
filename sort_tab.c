@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 15:40:10 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 17:02:05 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/11 12:17:58 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,13 @@ char			**create_tab(char **av, t_opt *opt, int ac, int flag)
 
 	j = 0;
 	i = flag - 1;
-	if (opt && !opt->t)
-		sort_tab_ascii(av, opt, flag);
+	sort_tab_ascii(av, opt, flag);
 	if (!(tab = (char **)malloc(sizeof(char *) * (ac - flag + 1))))
 		return (NULL);
 	cpy_in_tab(i, ac, tab, av);
-	if (opt && opt->t && !opt->r)
+	if (opt && opt->t)
 		tab = sort_tab_time(tab, ft_tablen(tab));
-	else if (opt && opt->t && opt->r)
+	if (opt && opt->t && opt->r)
 		tab = reverse_tab(tab);
 	return (tab);
 }

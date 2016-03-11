@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:21:51 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:21:54 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/11 12:00:11 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static char	*get_time(const long *f_time)
 	return (new);
 }
 
-void		fill_info(struct stat st, t_lst *new, char *file)
+void		fill_info(struct stat st, t_lst *new, char *file, char *path)
 {
 	struct passwd	*user_name;
 	struct group	*group_name;
@@ -111,10 +111,12 @@ void		fill_info(struct stat st, t_lst *new, char *file)
 	new->size = format_size(ft_itoa(st.st_size));
 	new->date = get_time(&st.st_mtime);
 	new->date_id = (int)(st.st_mtime);
+	new->ntime = st.N_TIME;
 	new->name = ft_strdup(file);
 	new->min = ft_itoa(minor(st.st_rdev));
 	new->maj = ft_strjoin(ft_itoa(major(st.st_rdev)), ",");
 	new->is_dir = (new->perm[0] == 'd' && ft_strcmp(new->name, ".")
 			&& ft_strcmp(new->name, ".."));
+	new->path = get_pathname(new, path);
 	new->next = NULL;
 }

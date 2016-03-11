@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 15:59:17 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:21 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:25:39 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_lst			*get_info(t_lst *head, char *file, char *path)
 		return (NULL);
 	ptr = head;
 	if (lstat(path, &st) <= 0)
-		fill_info(st, new, file);
+		fill_info(st, new, file, path);
 	if (head == NULL)
 		return (new);
 	while (ptr->next)

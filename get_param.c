@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:21:37 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 17:15:07 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:52:16 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int		error(char *path)
 {
-	ft_putstr("ft_ls: ");
+	ft_putstr_fd("ft_ls: ", 2);
 	path = get_path(path);
 	perror(path);
 	return (1);
@@ -22,10 +22,10 @@ static int		error(char *path)
 
 static int		error_r(char *path)
 {
-	ft_putstr("ft_ls: ");
+	ft_putstr_fd("ft_ls: ", 2);
 	path = get_path(path);
-	ft_putstr(path);
-	ft_putendl(": Permission denied");
+	ft_putstr_fd(path, 2);
+	ft_putendl_fd(": Permission denied", 2);
 	return (1);
 }
 
@@ -34,14 +34,17 @@ static void		do_get_info(DIR *dir, t_lst **lst, char *path)
 	struct dirent *ret;
 
 	while ((ret = readdir(dir)))
+	{
 		(*lst) = get_info((*lst), ret->d_name,
 				ft_strjoin(path, ret->d_name));
+	}
 	closedir(dir);
 }
 
 static void		suite(t_lst *lst, char *path, t_pad *pad, t_opt *opt)
 {
-	padding(&lst, pad);
+	if (opt && opt->l)
+		padding(&lst, pad);
 	manage_opt(lst, opt, path);
 	if (!opt->big_r && !lst->next)
 		free_lst(&lst);

@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/08 16:22:02 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:05 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:28:21 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static void	put_long(t_lst *lst)
 	else
 		ft_putstr_s(lst->majmin);
 	ft_putstr_s(lst->date);
-	ft_putendl(lst->name);
+	ft_putstr(lst->name);
+	if (lst->perm[0] == 'l')
+		put_link(lst->path);
+	ft_putchar('\n');
 }
 
 void		display_lst(t_lst *lst, int hidd)

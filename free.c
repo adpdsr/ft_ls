@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 15:36:47 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/08 16:22:15 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/03/10 17:00:10 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,4 @@ void		free_lst(t_lst **lst)
 	}
 	free((*lst));
 	lst = NULL;
-}
-
-void		free_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i] != NULL)
-	{
-		free(tab[i]);
-		tab[i] = NULL;
-		i++;
-	}
 }
