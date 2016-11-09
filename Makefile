@@ -6,37 +6,47 @@
 #    By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/08 16:51:41 by adu-pelo          #+#    #+#              #
-#    Updated: 2016/03/10 17:13:37 by adu-pelo         ###   ########.fr        #
+#    Updated: 2016/11/09 13:31:16 by adu-pelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_ls
+NAME	= ft_ls
 
-SRC = data.c display.c format_path.c free.c get_info.c get_param.c main.c \
-	  manage_opt.c option.c padding.c recursive.c size.c sort_lst.c sort_tab.c \
-	  sort_tab_r.c tool.c tool2.c
+C_DIR	= sources
+C_DIRS	= $(shell find $(C_DIR) -type d -follow -print)
+C_FILES	= $(shell find $(C_DIRS) -type f -follow -print | grep -w "[.c]$$")
 
-OBJ = $(SRC:.c=.o)
-LIB = ./libft/libft.a
-FLAGS = -Wall -Wextra -Werror
+O_DIR	= .tmp/obj
+O_DIRS	= $(C_DIRS:$(C_DIR)%=$(O_DIR)%)
+O_FILES	= $(C_FILES:$(C_DIR)%.c=$(O_DIR)%.o)
 
-$(NAME): $(OBJ)
-	make -C ./libft
-	gcc $(FLAGS) $(OBJ) $(LIB) -o $(NAME)
+FLAGS	= -Wall -Werror -Wextra
+INCS	= -Iincludes -Ilibft
+LIB		= -L./libft -lft
 
 all: $(NAME)
 
-%.o: %.c
-	gcc $(FLAGS) -o $@ -c $<
+$(NAME): $(O_FILES)
+	@echo "Creating $(NAME)"
+	@make -C ./libft
+	@gcc $(FLAGS) $^ $(LIB) -o $@
+
+$(O_DIR)%.o: $(C_DIR)%.c
+	@echo "Creating object : $@"
+	@mkdir -p $(O_DIRS) $(O_DIR)
+	@gcc $(FLAGS) $(INCS) -o $@ -c $<
 
 clean:
-	rm -f $(OBJ)
-	make -C libft/ clean
+	@echo "Deleting objects"
+	@rm -rf $(O_FILES)
+	@make clean -C libft
 
 fclean: clean
-	rm -rf $(NAME)
-	make fclean -C libft
+	@echo "Deleting $(NAME)"
+	@make fclean -C libft
+	@rm -rf $(NAME)
+	@rm -rf .tmp/
 
-re: fclean $(NAME)
+re: fclean all
 
 .PHONY : all clean fclean re
