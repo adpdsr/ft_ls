@@ -6,7 +6,7 @@
 /*   By: adu-pelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 14:59:58 by adu-pelo          #+#    #+#             */
-/*   Updated: 2016/03/11 12:17:40 by adu-pelo         ###   ########.fr       */
+/*   Updated: 2016/11/09 13:30:38 by adu-pelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_LS_H
 
 # define N_TIME st_mtimespec.tv_nsec
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 # include <unistd.h>
 # include <dirent.h>
 # include <sys/stat.h>
