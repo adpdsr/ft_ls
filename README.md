@@ -1,14 +1,15 @@
 #ft_ls
   
-42 school project (Paris, France)
+Projet Ecole 42 (Paris)
   
 ##Synopsis
 
-The goal of this project was to reproduce the ls UNIX command. This command list informations about the files.
+Le but de ce projet était de recoder la fonction ls du systeme (UNIX, cf. [man ls](http://manpagesfr.free.fr/man/man1/ls.1.html)). Cette commande liste des informations à propos de fichiers.
 
-Available options :
-<li>l (displays the mode, number of links, owner, group, size (in bytes), and time of last modification for each file)</li>
-<li>r (reverses the order of the sort, giving reverse alphabetic or the oldest first, as appropriate)</li>
-<li>a (lists all entries in the directory, including the entries that begin with a . (dot))</li>
-<li>t (sorts by time of last modification (latest first) instead of by name)</li>
-<li>R (lists all subdirectories recursively)</li>
+###Options disponibles :
+
+* l
+* r
+* a
+* t
+* R
