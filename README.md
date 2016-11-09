@@ -14,4 +14,4 @@ Le but de ce projet était de recoder la fonction ls du systeme (UNIX, cf. [man 
 * t
 * R
   
-[exemple d'utilisation](./img/utilisation_ls.png)
+![exemple d'utilisation](./img/utilisation_ls.png)
